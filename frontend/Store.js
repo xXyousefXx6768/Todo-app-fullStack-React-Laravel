@@ -10,7 +10,7 @@ const rootReducers= combineReducers({
     user:UserReducer,
     todos:TodoReducer,
     theme:DarkModeReducer,
-    openModal:ModalReducer
+    Modal:ModalReducer
 
 });
 const store= createStore(rootReducers,applyMiddleware(thunk));

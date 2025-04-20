@@ -1,9 +1,10 @@
 import React,{ useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { openModal, closeModal } from '../../redux/actions/ModalAction';
+import { setOpenModal, closeModal } from '../../redux/actions/ModalAction';
 function TaskModal() {
     const modalRef = useRef(null);
-    const isOpen = useSelector((state) => state.modal.isOpen);
+    const isOpen = useSelector((state) => state.Modal.openModal);
+
      const dispatch = useDispatch()
      const handleCloseModal = (event) => {
         // If clicked outside modal box, close it
@@ -12,7 +13,7 @@ function TaskModal() {
         }
       };
   return (
-    <div ref={modalRef} onClick={ handleCloseModal} className='z-50 Modal flex justify-center items-center bg-[#1f1b1b6b] ' >
+    <div  onClick={handleCloseModal} className='z-50 Modal absolute top-0 left-0 flex items-center justify-center w-screen h-screen bg-[#1f1b1b6b] ' >
      <section  ref={modalRef} onClick={(e) => e.stopPropagation()} className='bg-white w-1/2 !rounded-lg'  >
       <form className='flex flex-col gap-4 !p-8' >
         <div className='flex flex-col gap-1' >

@@ -1,5 +1,6 @@
 import React from 'react'
 import Filter from '../TaskComponents/Filter'
+import CreateTask from '../TaskComponents/CreateTask'
 function TaskPageLayout() {
   return (
    <main className='flex h-full bg-[#f9f9f9]'>
@@ -14,7 +15,7 @@ function TaskPageLayout() {
        grid 
        grid-cols-[repeat(auto-fill,minmax(300px,1fr))] 
        gap-[1.5rem]'>
-     
+       <CreateTask />
        </div>
     </section>
    </main>
