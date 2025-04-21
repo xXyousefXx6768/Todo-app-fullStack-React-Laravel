@@ -17,8 +17,8 @@ function TopBar() {
   ];
 
   return (
-    <div  className='flex !p-3  w-full bg-[#f9f9f9] justify-between '>
-      <div className="content-1">
+    <div  className='flex !p-3 dark:bg-dark  w-full bg-[#f9f9f9] justify-between '>
+      <div className="content-1 dark:text-textDark">
         <h3 className="font-medium">
           <span role="img" aria-label="wave">👋</span>
           Welcome, to Taskfyer

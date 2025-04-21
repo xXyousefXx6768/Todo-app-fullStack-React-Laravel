@@ -1,4 +1,17 @@
 @import "tailwindcss";
+
+@tailwind utilities;
+
+@custom-variant dark (&:where(.dark, .dark *));
+html, body, #root {
+    height: 100%;
+  }
+  @theme{
+    --color-dark: #0b1b39;
+    --color-textDark: #fff;
+    --color-BordarDark: #273851;
+    --color-CardDark: #4a5b8185;
+  }
 *{
     margin: 0;
     padding: 0;
@@ -9,3 +22,27 @@
     height: 100%;
     background: url('./assets/glass.png')no-repeat 50% fixed;
 }
+@layer utilities {
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 8px;
+    }
+  
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #a0aec0; /* default (light) */
+      border-radius: 5px;
+    }
+  
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+  
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #4b5563; /* darker gray in dark mode */
+    }
+  
+    .dark .custom-scrollbar::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+  }
+  

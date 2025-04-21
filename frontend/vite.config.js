@@ -9,4 +9,7 @@ export default defineConfig({
     tailwindcss(),
      
   ],
+  define: {
+    'process.env.LARAVEL_SERVER':JSON.stringify(process.env.BASE_URL),
+  }
 })

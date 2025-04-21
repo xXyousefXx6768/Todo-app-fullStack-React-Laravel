@@ -8,15 +8,17 @@ import  Topbar from './compomnents/Topbar';
 import SideBar from './compomnents/SideBar';
 import AuthLayout from './compomnents/Layouts/AuthLayout';
 import TaskPageLayout from './compomnents/Layouts/TaskPageLayout';
+import { useSelector } from 'react-redux';
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const isDark = useSelector((state) => state.theme.isDarkMode);
 
   return (
     <>
-      <main className='h-screen w-screen flex'>
+      <main className={`h-screen ${isDark ? 'dark' : ''} overflow-hidden min-h-screen flex`}>
         <SideBar />
-        <section className='flex flex-col w-full'>
+        <section className='flex flex-col h-full w-full'>
         <Topbar />
         <Routes>
         <Route  path="/Auth" element={<AuthLayout />} />

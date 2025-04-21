@@ -8,17 +8,18 @@ import {
 } from "../types/actiontypes";
 
 import { ADD_TODO, GET_TODOS } from "../types/actiontypes";
-
+const LARAVEL_SERVER=JSON.stringify(import.meta.env.VITE_LARAVEL_BASE_URL);
 export const register = ({ name, email, pass }) => async (dispatch) => {
     const config = {
         headers: {
+            'authorization': `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     };
     const body = JSON.stringify({ name, email, pass });
 
     try {
-        const res = await axios.post(`${import.meta.env.VITE_LARAVEL_BASE_URL}/RegisterUser`, body, config);
+        const res = await axios.post(`${LARAVEL_SERVER}/RegisterUser`, body, config);
 
         localStorage.setItem('token', res.data.token);
 
@@ -46,13 +47,14 @@ export const register = ({ name, email, pass }) => async (dispatch) => {
 export const login = ({ email, pass }) => async (dispatch) => {
     const config = {
         headers: {
+            'authorization': `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     };
     const body = JSON.stringify({ email, pass });
 
     try {
-        const res = await axios.post(`${import.meta.env.VITE_LARAVEL_BASE_URL}/LoginUser`, body, config);
+        const res = await axios.post(`${LARAVEL_SERVER}/LoginUser`, body, config);
 
         localStorage.setItem('token', res.data.token);
 
@@ -83,9 +85,16 @@ export const logout = () => async (dispatch) => {
         type: LOGOUT_DONE
     });
 };
-export const updateUserInfo = (user) => (dispatch)=> {
-    dispatch({
-        type:UPDATE_USER_INFO,
-        payload:user
-    })
+export const updateUserInfo = (user) => async (dispatch)=> {
+    try {
+        const res = await axios.put(`${LARAVEL_SERVER}/updateUserInfo`, user);
+    
+        dispatch({
+          type: UPDATE_USER_INFO,
+          payload: res.data,
+        });
+      } catch (error) {
+        console.error('Failed to update user info:', error);
+    
+      }
 }

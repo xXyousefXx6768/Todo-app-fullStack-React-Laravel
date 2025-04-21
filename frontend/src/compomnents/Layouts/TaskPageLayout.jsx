@@ -1,23 +1,36 @@
 import React from 'react'
 import Filter from '../TaskComponents/Filter'
 import CreateTask from '../TaskComponents/CreateTask'
+import TaskCard from '../TaskComponents/TaskCard'
+import PersonalSection from '../TaskComponents/PersonalSection'
 function TaskPageLayout() {
   return (
-   <main className='flex h-full bg-[#f9f9f9]'>
-    <section className=' w-full flex flex-col !border-2 bg-[#EDEDED] !border-white !rounded-[1.5rem] overflow-auto'>
-    <div class="flex !mt-1 !p-4 justify-between">
+   <main className='flex h-[90%] dark:bg-dark bg-[#f9f9f9]'>
+    <section className=' w-full  flex flex-col !p-3 dark:bg-dark !border-2 bg-[#EDEDED] !border-white dark:!border-BordarDark !rounded-[1.5rem] 
+      '>
+        <div className=' !p-2 custom-scrollbar  dark:scrollbar-dark overflow-auto'>
+    <div class="flex dark:text-textDark !mt-1 !p-4 justify-between">
         <h1 class="text-2xl font-bold">All Tasks</h1>
         <Filter />
     </div>
        <div className='
        !pb-[2rem] 
+       !p-6
        !mt-6 
        grid 
-       grid-cols-[repeat(auto-fill,minmax(300px,1fr))] 
+       grid-cols-[repeat(auto-fill,minmax(360px,1fr))] 
        gap-[1.5rem]'>
+        <TaskCard/>
+        <TaskCard/>
+        <TaskCard/>
+       <TaskCard />
        <CreateTask />
        </div>
+        </div>
     </section>
+     <section className='w-[26rem] !mt-[1rem] h-[calc(100%-5rem)]'>
+     <PersonalSection />
+     </section>
    </main>
   )
 }

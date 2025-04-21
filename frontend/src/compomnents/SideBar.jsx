@@ -44,7 +44,8 @@ function SideBar() {
     ]
 
   return (
-    <div className="basis-[5rem] flex flex-col bg-[#f9f9f9]">
+   
+    <div className="  basis-[5rem] flex dark:bg-dark flex-col bg-[#f9f9f9]">
       <div className="flex items-center justify-center h-[5rem]">
         <img src={logo} width={28} height={28} alt="logo" />
       </div>
@@ -70,6 +71,7 @@ function SideBar() {
         </div>
       </div>
     </div>
+    
 
   )
 }
