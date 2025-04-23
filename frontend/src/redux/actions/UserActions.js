@@ -6,10 +6,11 @@ import {
     LOGOUT_DONE,
     UPDATE_USER_INFO
 } from "../types/actiontypes";
+import { toast } from "react-toastify";
 
 import { ADD_TODO, GET_TODOS } from "../types/actiontypes";
 const LARAVEL_SERVER=JSON.stringify(import.meta.env.VITE_LARAVEL_BASE_URL);
-export const register = ({ name, email, pass }) => async (dispatch) => {
+export const RegisterUser = ({ name, email, pass }) => async (dispatch) => {
     const config = {
         headers: {
             'authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -30,7 +31,17 @@ export const register = ({ name, email, pass }) => async (dispatch) => {
                 user: res.data.user
             }
         });
-
+         toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+            });
         dispatch({
             type: GET_TODOS,
             payload: res.data.user.user_todos
@@ -65,6 +76,17 @@ export const login = ({ email, pass }) => async (dispatch) => {
                 user: res.data.user
             }
         });
+        toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+            });
 
         dispatch({
             type: GET_TODOS,
@@ -93,6 +115,17 @@ export const updateUserInfo = (user) => async (dispatch)=> {
           type: UPDATE_USER_INFO,
           payload: res.data,
         });
+        toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+            });
       } catch (error) {
         console.error('Failed to update user info:', error);
     

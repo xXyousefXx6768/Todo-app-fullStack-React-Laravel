@@ -54,7 +54,7 @@ function SideBar() {
         <ul className="flex flex-col gap-10">
           {NavItems.map((item, index) => (
             <li key={index} className="relative group">
-              <Link href={item.link}>{item.icon}</Link>
+              <Link to={item.link}>{item.icon}</Link>
 
               {/* Hover Tooltip */}
               <span className="u-triangle absolute top-[50%] translate-y-[-50%] left-8 text-xs pointer-events-none text-white bg-[#3aafae] !px-2 !py-1 !rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
