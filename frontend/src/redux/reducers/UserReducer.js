@@ -3,7 +3,7 @@ import {
     REGISTER_FAIL,
     LOGIN_DONE,
     LOGIN_FAIL,
-    LOGOUT,
+    LOGOUT_DONE,
     UPDATE_USER_INFO
 } from "../types/actiontypes";
 
@@ -52,7 +52,7 @@ export default function  (state=initialState,action){
 
                 }
 
-                case LOGOUT:
+                case LOGOUT_DONE:
                 localStorage.removeItem('token')
                 return{
                     ...state,

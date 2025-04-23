@@ -5,7 +5,7 @@
  export const REGISTER_FAIL='REGISTER_FAIL'
  export const LOGIN_DONE='LOGIN_DONE'
  export const LOGIN_FAIL='LOGIN_FAIL'
- export const LOGOUT='LOGOUT'
+ export const LOGOUT_DONE='LOGOUT_DONE'
  export const UPDATE_USER_INFO='UPDATE_USER_INFO'
  export const GET_TODOS='GET_TODOS'
  export const GET_SINGLE_TODO='GET_SINGLE_TODO'
