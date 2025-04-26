@@ -6,31 +6,52 @@ import {
     LOGOUT_DONE,
     UPDATE_USER_INFO
 } from "../types/actiontypes";
-import { toast } from "react-toastify";
+import { toast, Bounce } from "react-toastify";
 
 import { ADD_TODO, GET_TODOS } from "../types/actiontypes";
-const LARAVEL_SERVER=JSON.stringify(import.meta.env.VITE_LARAVEL_BASE_URL);
-export const RegisterUser = ({ name, email, pass }) => async (dispatch) => {
-    const config = {
-        headers: {
-            'authorization': `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-        }
-    };
-    const body = JSON.stringify({ name, email, pass });
+import axios from "axios";
 
+
+
+const LARAVEL_SERVER = import.meta.env.VITE_LARAVEL_BASE_URL;
+
+const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift());
+};
+
+
+export const RegisterUser = ({ name, email, password }) => async (dispatch) => {
     try {
-        const res = await axios.post(`${LARAVEL_SERVER}/RegisterUser`, body, config);
 
-        localStorage.setItem('token', res.data.token);
+        console.log("📍 Getting CSRF token...");
+        await axios.get(`${LARAVEL_SERVER}/sanctum/csrf-cookie`, {
+            withCredentials: true
+        });
+        console.log("✅ CSRF token:" );
+        console.log("📍 Registering user...");
+        
+        const res = await axios.post(
+            `${LARAVEL_SERVER}/api/register`,
+            { name, email, password },
+            { withCredentials: true }
+          );
+          
+          console.log("✅ Register response:", res.data);
+          console.log("📍 Fetching user...");
+        const userRes = await axios.get(`${LARAVEL_SERVER}/api/user`, { withCredentials: true });      
+        console.log("✅ User response:", userRes.data  );
+          if (!res?.data) throw new Error("Empty response");
 
-        dispatch({
+          dispatch({
             type: REGISTER_DONE,
             payload: {
-                token: res.data.token,
-                user: res.data.user
-            }
+                user: userRes.data,
+            },
         });
+
+        dispatch({ type: GET_TODOS, payload: userRes.data.user_todos });
          toast.success(res.data.message, {
             position: "top-center",
             autoClose: 5000,
@@ -42,15 +63,13 @@ export const RegisterUser = ({ name, email, pass }) => async (dispatch) => {
             theme: "colored",
             transition: Bounce,
             });
-        dispatch({
-            type: GET_TODOS,
-            payload: res.data.user.user_todos
-        });
+
 
     } catch (error) {
+        console.log("❌ Register error:", error.response?.data || error.message);
         dispatch({
             type: REGISTER_FAIL,
-            payload: error.response.data
+            payload:  error.response?.data  || { message: error.message },
         });
     }
 };
@@ -102,9 +121,11 @@ export const login = ({ email, pass }) => async (dispatch) => {
 };
 
 export const logout = () => async (dispatch) => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
+
     dispatch({
         type: LOGOUT_DONE
+
     });
 };
 export const updateUserInfo = (user) => async (dispatch)=> {

@@ -4,7 +4,8 @@ import { Navigate } from "react-router-dom";
 const ProtectedRoute = ({ children }) => {
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
     const isloading= useSelector((state) => state.user.loading);
-   if (!isloading) {
+    console.log(isAuthenticated )
+   if (isloading) {
     return <div class="grid h-[100%] dark:bg-blue-900 w-full place-items-center overflow-x-scroll  p-6 lg:overflow-visible">
     <svg class="w-16 h-16 animate-spin text-gray-900/50" viewBox="0 0 64 64" fill="none"
       xmlns="http://www.w3.org/2000/svg" width="24" height="24">

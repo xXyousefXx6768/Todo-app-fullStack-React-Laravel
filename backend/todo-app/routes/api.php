@@ -5,29 +5,29 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
 
-Route::get('/user', function (Request $request) {
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
+});
 
-Route::post('/login', [userController::class, 'loginUser']);
-Route::post('/register', [userController::class, 'createUser']);
+Route::post('/register', [UserController::class, 'createUser']);
+Route::post('/login', [UserController::class, 'loginUser']);
 
- Route::group([ 'middleware' => 'auth:sanctum' ], function (){
-     Route::get('/todos', 'TodoController@getAll');
-     Route::post('/todos', 'TodoController@store');
-     Route::put('/todos/{todo}', 'TodoController@update');
-     Route::delete('/todos/{todo}', 'TodoController@destroy');
- }
- );
+Route::middleware('auth:sanctum')->group(function () {
+    // All your authenticated routes here
 
-
-    Route::get('/any' ,function ( Request $request  ) {
-   return response()->json([
-        'user'=> 'lets goooooooo'
-   ]);
-    }
-    );
-
-
-
-
+    // Todo routes
+    Route::get('/FindTodo', [TodoController::class,'find']);
+    Route::post('/CreateTodo', [TodoController::class,'create']);
+    Route::put('/todos/{todo}', [TodoController::class, 'update']);
+    Route::delete('/todos/{todo}', [TodoController::class, 'delete']);
+});

@@ -1,14 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
-
 class TodoController extends Controller
 {
+
     function store(Request $req): \Illuminate\Http\JsonResponse
     {
         $validate = Validator::make($req->all(), [
@@ -46,15 +44,15 @@ class TodoController extends Controller
             return response()->json($validate->errors(), 422);
 
         }
-       $todo->update($req->only([
-           'title', 'description', 'started_at', 'status'
-       ]));
+        $todo->update($req->only([
+            'title', 'description', 'started_at', 'status'
+        ]));
         return response()->json([
             'message' => 'Todo updated successfully!',
             'todo' => $todo
         ] , 200 );
     }
-   function find(int $id): \Illuminate\Http\JsonResponse{
+    function find(int $id): \Illuminate\Http\JsonResponse{
         $todo = Todo::find($id);
         if (!$todo){
             return response()->json([
@@ -66,9 +64,9 @@ class TodoController extends Controller
             'message' => 'Todo retrieved successfully!',
             'todo' => $todo
         ],200);
-   }
+    }
 
-   function destroy(int $id): \Illuminate\Http\JsonResponse{
+    function destroy(int $id): \Illuminate\Http\JsonResponse{
         $res = Todo::find($id)->delete();
         if ($res){
             return response()->json([
@@ -80,6 +78,7 @@ class TodoController extends Controller
             ],422);
         }
 
-   }
+    }
+
 
 }

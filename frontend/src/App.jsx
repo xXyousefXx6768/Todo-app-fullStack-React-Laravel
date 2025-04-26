@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import axios from "axios";
 import './App.css'
 import { PieChart } from '@mui/x-charts/PieChart';
 import { Route, Routes } from 'react-router-dom';
@@ -17,7 +18,14 @@ import { ToastContainer } from 'react-toastify';
 function App() {
 
   const isDark = useSelector((state) => state.theme.isDarkMode);
+   const user = useSelector((state) => state.user.user);
+   const token= useSelector((state) => state.user.token);
+   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
+   console.log(user)
+   
+   axios.defaults.withCredentials = true;
+   
   return (
     <>
       <main className={`h-screen ${isDark ? 'dark' : 'light'} overflow-hidden min-h-screen flex`}>

@@ -6,7 +6,10 @@ import { RegisterUser } from '../../redux/actions/UserActions'
 function Register() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const dispatch = useDispatch()
-  const onSubmit = (data) => dispatch(RegisterUser(data))
+  const onSubmit = (data) =>{ 
+    console.log("Form data:", data);
+    dispatch(RegisterUser(data))
+  }
   
   return (
     <div className='!p-4'>
@@ -109,7 +112,7 @@ function Register() {
                     <button type="submit"  
                     className="!mt-[1.5rem] flex-1 !px-4 !py-3 
                     font-bold bg-[#2ECC71] text-white !rounded-md 
-                    hover:bg-[#1abc9c]  transition-colors">Login Now</button>
+                    hover:bg-[#1abc9c]  transition-colors">Register Now</button>
                     </div>
                    </div>
                </form>

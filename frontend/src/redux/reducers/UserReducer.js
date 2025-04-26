@@ -8,30 +8,27 @@ import {
 } from "../types/actiontypes";
 
 const initialState={
-    user:null,
-    Token: localStorage.getItem('token'),
-    isAuthenticated:null,
-    loading:true
+    user: null,
+    isAuthenticated: false,
+    loading: false,
 }
 
 export default function  (state=initialState,action){
      const {type, payload}=action
      switch (type) {
         case  REGISTER_DONE:
-            localStorage.setItem('token',payload.token)
            return{
              ...state,
-             ...payload,
-             isAuthenticated:true,
-             loading:false
+             user: payload.user,
+             isAuthenticated: true,
+             loading: false,
            }
            case REGISTER_FAIL:
-            localStorage.removeItem('token')
             return{
                 ...state,
-                token:null,
-                isAuthenticated:false,
-                loading:false
+                user: null,
+                isAuthenticated: false,
+                loading: false,
 
             }
             case LOGIN_DONE:
