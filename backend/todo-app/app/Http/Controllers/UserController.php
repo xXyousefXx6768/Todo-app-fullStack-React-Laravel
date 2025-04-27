@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,34 +14,48 @@ class UserController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required',
             'profile_image_url' => 'mimes:jpeg,jpg,png'
         ]);
+
         $defaultImage = 'images/user.png';
         if ($request->hasFile('profile_image_url')) {
             $imagePath = $request->file('profile_image_url')->store('profile_images', 'public');
         } else {
             $imagePath = $defaultImage;
         }
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
-            'profile_image_url' => $imagePath,
-        ]);
 
-        // Log in the user and generate a token
-        Auth::login($user);
+        try {
+            $user = User::create([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
+                'profile_image_url' => $imagePath,
+            ]);
 
-        $user->load('userTodos');
+            Auth::login($user);
+            $user->load('userTodos');
 
-        // Return the response
-        return response()->json([
-            'message' => 'User created successfully!',
-            'user' => $user,
-        ], 201);
+            return response()->json([
+                'message' => 'User created successfully!',
+                'user' => $user,
+            ], 201);
+
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] == 1062) { 
+                return response()->json([
+                    'message' => 'This email is already registered!',
+                ], 409); // Conflict
+            }
+
+
+            return response()->json([
+                'message' => 'Database error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
+
 
     function loginUser(Request $request): \Illuminate\Http\JsonResponse
     {

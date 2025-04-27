@@ -1,11 +1,15 @@
 import React from 'react'
 import Login from '../AuthComponents/Login'
 import Register from '../AuthComponents/Register'
-import { Route, Routes } from 'react-router-dom';
+import { Route,Routes,Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function AuthLayout() {
   const isDark = useSelector((state) => state.theme.isDarkMode);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  if (isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
   return (
     <main className='flex h-full dark:bg-dark overflow-auto custom-scrollbar  dark:scrollbar-dark bg-[#f9f9f9]'>
         <section className={`main-layout w-full  flex justify-center items-center 

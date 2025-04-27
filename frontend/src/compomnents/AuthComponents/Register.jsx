@@ -2,13 +2,17 @@ import React from 'react'
 import { Link } from 'react-router'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
+import { redirect } from 'react-router'
 import { RegisterUser } from '../../redux/actions/UserActions'
 function Register() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const dispatch = useDispatch()
+
   const onSubmit = (data) =>{ 
     console.log("Form data:", data);
+    
     dispatch(RegisterUser(data))
+    
   }
   
   return (

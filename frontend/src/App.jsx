@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import axios from "axios";
 import './App.css'
 import { PieChart } from '@mui/x-charts/PieChart';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes,Navigate } from 'react-router-dom';
 import  Topbar from './compomnents/Topbar';
 import SideBar from './compomnents/SideBar';
 import Login from './compomnents/AuthComponents/Login';
@@ -20,33 +20,41 @@ function App() {
   const isDark = useSelector((state) => state.theme.isDarkMode);
    const user = useSelector((state) => state.user.user);
    const token= useSelector((state) => state.user.token);
+   const isloading= useSelector((state) => state.user.loading);
    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
    console.log(user)
-   
+   console.log(isloading+':loading')
+   console.log(  'is:'+  isAuthenticated  )
    axios.defaults.withCredentials = true;
    
   return (
     <>
       <main className={`h-screen ${isDark ? 'dark' : 'light'} overflow-hidden min-h-screen flex`}>
-        <ToastContainer/>
+        <ToastContainer />
         <SideBar />
-        <section className='flex flex-col h-full w-full'>
-        <Topbar />
-        <Routes>
-        <Route  path="/auth/*" element={<AuthLayout />} />
-       
-        <Route path='/' element={
-          <ProtectedRoute>
-          <TaskPageLayout />
-          </ProtectedRoute>} 
-          />
-        
-        </Routes>
+        <section className="flex flex-col h-full w-full">
+          <Topbar />
+          <Routes>
+
+          
+            <Route path="/" element={
+              isAuthenticated ? <Navigate to="/task" replace /> : <Navigate to="/auth" replace />
+            } />
+
+          
+            <Route path="/auth/*" element={<AuthLayout />} />
+
+            
+            <Route path="/task" element={
+              <ProtectedRoute>
+                <TaskPageLayout />
+              </ProtectedRoute>
+            } />
+
+          </Routes>
         </section>
       </main>
-
-
     </>
   )
 }

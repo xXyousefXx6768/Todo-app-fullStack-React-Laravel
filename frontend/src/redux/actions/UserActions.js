@@ -15,11 +15,6 @@ import axios from "axios";
 
 const LARAVEL_SERVER = import.meta.env.VITE_LARAVEL_BASE_URL;
 
-const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift());
-};
 
 
 export const RegisterUser = ({ name, email, password }) => async (dispatch) => {
@@ -39,19 +34,15 @@ export const RegisterUser = ({ name, email, password }) => async (dispatch) => {
           );
           
           console.log("✅ Register response:", res.data);
-          console.log("📍 Fetching user...");
-        const userRes = await axios.get(`${LARAVEL_SERVER}/api/user`, { withCredentials: true });      
-        console.log("✅ User response:", userRes.data  );
-          if (!res?.data) throw new Error("Empty response");
-
+          
           dispatch({
             type: REGISTER_DONE,
             payload: {
-                user: userRes.data,
+                user: res.data.user,
             },
         });
 
-        dispatch({ type: GET_TODOS, payload: userRes.data.user_todos });
+        dispatch({ type: GET_TODOS, payload: res.data.user_todos });
          toast.success(res.data.message, {
             position: "top-center",
             autoClose: 5000,
@@ -67,10 +58,25 @@ export const RegisterUser = ({ name, email, password }) => async (dispatch) => {
 
     } catch (error) {
         console.log("❌ Register error:", error.response?.data || error.message);
+        const errorMessage =
+        error.response && error.response.data && error.response.data.message
+            ? error.response.data.message
+            : "An unexpected error occurred";
         dispatch({
             type: REGISTER_FAIL,
             payload:  error.response?.data  || { message: error.message },
         });
+        toast.error(error.response.data.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+        })
     }
 };
 
@@ -119,7 +125,25 @@ export const login = ({ email, pass }) => async (dispatch) => {
         });
     }
 };
-
+export const loadUserInfo = () => async (dispatch) => {
+    try {
+        const res = await axios.get(`${LARAVEL_SERVER}/user`, {
+            withCredentials: true
+        });
+        dispatch({
+            type: LOGIN_DONE,
+            payload: {
+                user: res.data.user
+            }
+        });
+        dispatch({
+            type: GET_TODOS,
+            payload: res.data.user.user_todos
+        });
+    } catch (error) {
+        console.error(error);
+    }
+}
 export const logout = () => async (dispatch) => {
     localStorage.removeItem("token");
 
