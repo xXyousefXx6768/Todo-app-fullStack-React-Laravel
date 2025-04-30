@@ -9,7 +9,7 @@ import {
 
 const initialState={
     user: null,
-    isAuthenticated: false,
+    isAuthenticated: localStorage.getItem('isAuthenticated') === 'true' ,
     loading: false,
 }
 
@@ -17,6 +17,7 @@ export default function  (state=initialState,action){
      const {type, payload}=action
      switch (type) {
         case  REGISTER_DONE:
+            localStorage.setItem('isAuthenticated',true)
            return{
              ...state,
              user: payload.user,
@@ -24,6 +25,7 @@ export default function  (state=initialState,action){
              loading: false,
            }
            case REGISTER_FAIL:
+            localStorage.setItem('isAuthenticated',false)
             return{
                 ...state,
                 user: null,
@@ -32,7 +34,7 @@ export default function  (state=initialState,action){
 
             }
             case LOGIN_DONE:
-                localStorage.setItem('token',payload.token)
+                localStorage.setItem('isAuthenticated',true)
                return{
                  ...state,
                  ...payload,
@@ -40,7 +42,7 @@ export default function  (state=initialState,action){
                  loading:false
                }
                case LOGIN_FAIL:
-                localStorage.removeItem('token')
+                localStorage.setItem('isAuthenticated',false)
                 return{
                     ...state,
                     token:null,
@@ -50,7 +52,7 @@ export default function  (state=initialState,action){
                 }
 
                 case LOGOUT_DONE:
-                localStorage.removeItem('token')
+                localStorage.setItemItem('isAuthenticated',false)
                 return{
                     ...state,
                     user:null,

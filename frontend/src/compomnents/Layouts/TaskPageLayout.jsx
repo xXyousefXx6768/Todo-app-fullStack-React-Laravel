@@ -1,11 +1,22 @@
 import React from 'react'
+import { useEffect } from 'react'
 import Filter from '../TaskComponents/Filter'
 import CreateTask from '../TaskComponents/CreateTask'
 import TaskCard from '../TaskComponents/TaskCard'
 import PersonalSection from '../TaskComponents/PersonalSection'
+import { useDispatch } from 'react-redux'
+import { loadUserInfo } from '../../redux/actions/UserActions'
 function TaskPageLayout() {
+
+  const dispatch= useDispatch()
+
+useEffect(() => {
+  dispatch(loadUserInfo());
+},[])
+
+
   return (
-   <main className='flex h-[90%] dark:bg-dark bg-[#f9f9f9]'>
+   <main className='flex h-[93%] dark:bg-dark bg-[#f9f9f9]'>
     <section className=' w-full  flex flex-col !p-3 dark:bg-dark !border-2 bg-[#EDEDED] !border-white dark:!border-BordarDark !rounded-[1.5rem] 
       '>
         <div className=' !p-2 custom-scrollbar  dark:scrollbar-dark overflow-auto'>

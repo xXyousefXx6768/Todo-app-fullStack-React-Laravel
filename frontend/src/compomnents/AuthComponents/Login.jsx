@@ -1,13 +1,25 @@
 import React from 'react'
 import { Link } from 'react-router'
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/actions/UserActions';
 import { useForm } from "react-hook-form";
 
 function Login() {
    const { register, handleSubmit, formState: { errors } } = useForm();
+   const dispatch = useDispatch()
+   const onSubmit = (data) =>{ 
+    console.log("Form data:", data);
+    
+    dispatch(login(data))
+    
+  }
+   
+
+   
   return (
     <div >
         <div className='bg-white dark:bg-dark dark:text-amber-100 !p-8'>
-               <form onSubmit={handleSubmit((data) => console.log(data))} >
+               <form onSubmit={handleSubmit(onSubmit)} >
                <h1 class="
                !mb-2 
                text-center 

@@ -7,6 +7,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use PHPUnit\Exception;
 
 class UserController extends Controller
 {
@@ -43,7 +44,7 @@ class UserController extends Controller
             ], 201);
 
         } catch (QueryException $e) {
-            if ($e->errorInfo[1] == 1062) { 
+            if ($e->errorInfo[1] == 1062) {
                 return response()->json([
                     'message' => 'This email is already registered!',
                 ], 409); // Conflict
@@ -84,10 +85,20 @@ class UserController extends Controller
 
     function logoutUser(Request $request): \Illuminate\Http\JsonResponse
     {
-        Auth::logout();
-        return response()->json([
-            'message' => 'User logged out successfully!'
-        ], 200);
+        try {
 
+
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return response()->json([
+                'message' => 'User logged out successfully!'
+            ], 200);
+        }catch (\Exception $e){
+            return response()->json([
+                'message' => $e->getMessage()
+
+            ],500);
+        }
     }
 }

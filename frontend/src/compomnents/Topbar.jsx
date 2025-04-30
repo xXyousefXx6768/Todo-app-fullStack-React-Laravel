@@ -3,12 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { toggleDarkMode } from "../redux/actions/DarkModeAction";
 
 function TopBar() {
   const isDark = useSelector((state) => state.theme.isDarkMode);
   const dispatch = useDispatch();
+  const location = useLocation();
+  console.log(location.pathname);
+  const content = location.pathname === "/auth" ? "Please Login or Register to view your tasks" : "You have 0 active tasks";
 
   const icons = [
     { icon: faGithub, action: () => window.open("https://github.com", "_blank") },
@@ -23,7 +27,7 @@ function TopBar() {
           <span role="img" aria-label="wave">👋</span>
           Welcome, to Taskfyer
         </h3>
-        <p>Please Login or Register to view your tasks</p>
+        <p>{content}</p>
       </div>
       <div className="content-2 justify-between h-[50px] flex items-center gap-[4.4rem]">
         <div className="pl-5">

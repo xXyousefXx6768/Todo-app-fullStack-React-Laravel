@@ -22,10 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register', [UserController::class, 'createUser']);
 Route::post('/login', [UserController::class, 'loginUser']);
 
+
 Route::middleware('auth:sanctum')->group(function () {
     // All your authenticated routes here
-
-    // Todo routes
+    Route::post('/logout', [UserController::class, 'logoutUser']);
     Route::get('/FindTodo', [TodoController::class,'find']);
     Route::post('/CreateTodo', [TodoController::class,'create']);
     Route::put('/todos/{todo}', [TodoController::class, 'update']);

@@ -7,6 +7,7 @@
  export const LOGIN_FAIL='LOGIN_FAIL'
  export const LOGOUT_DONE='LOGOUT_DONE'
  export const UPDATE_USER_INFO='UPDATE_USER_INFO'
+ export const UPDATE_USER_FAIL='UPDATE_USER_FAIL'
  export const GET_TODOS='GET_TODOS'
  export const GET_SINGLE_TODO='GET_SINGLE_TODO'
  export const DARK_MODE='DARK_MODE'
