@@ -3,65 +3,151 @@ import {
   ADD_TODO,
   REMOVE_TODO,
   UPDATE_TODO,
-  GET_TODOS
-} from "../types/actiontypes";
+  GET_TODOS,
+  ADD_TODO_FAIL,
+  GET_TODOS_FAIL,
 
-// Add Todo
-export const addTodo = (todo) => async (dispatch) => {
+} from "../types/actiontypes";
+import { toast, Bounce } from "react-toastify";
+
+
+const LARAVEL_SERVER = import.meta.env.VITE_LARAVEL_BASE_URL;
+
+///////////////add todo////////////////
+
+export const addTodo = (...todoData) => async (dispatch) => {
   try {
-    const Token = localStorage.getItem('token');
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${Token}`
-      }
-    };
-    const res = await axios.post(`${import.meta.env.VITE_LARAVEL_BASE_URL}/addTodo`, todo, config);
+    
+
+   //////////////requestData////////////////////
+    const todo = { ...todoData };
+    const res = await axios.post(
+      `${LARAVEL_SERVER}/addTodo`, 
+      todo ,
+      {withCredentials: true}
+
+    );
     dispatch({
       type: ADD_TODO,
       payload: res.data
     });
+
+    toast.success(res.data.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        });
+
   } catch (error) {
-    console.error(error);
+    const errorMessage = 
+    error.response && error.response.data && error.response.data.message
+      ? error.response.data.message
+      : error.message;
+    dispatch({
+      type: ADD_TODO_FAIL
+    })
+    toast.error(errorMessage, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
   }
 };
 
-// Remove Todo
+//////////////// Remove Todo///////////////////
 export const removeTodo = (id) => async (dispatch) => {
   try {
-    const Token = localStorage.getItem('token');
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${Token}`
-      }
-    };
-    await axios.delete(`${import.meta.env.VITE_LARAVEL_BASE_URL}/removeTodo/${id}`, config);
+     /////////////requestTodoId////////////////////
+   const res = await axios.delete(
+      `${LARAVEL_SERVER}/api/removeTodo/${id}`,
+      {withCredentials: true}
+        
+     );
     dispatch({
       type: REMOVE_TODO,
       payload: id
     });
+    toast.success(res.data.message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    })
   } catch (error) {
-    console.error(error);
+     const errorMessage = error.response && error.response.data && error.response.data.message
+      ? error.response.data.message
+      : error.message;
+    dispatch({
+      type: GET_TODOS_FAIL
+    })
+    toast.error(errorMessage, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
   }
 };
 
 // Update Todo
-export const updateTodo = (todo) => async (dispatch) => {
+export const updateTodo = (...todoData) => async (dispatch) => {
   try {
-    const Token = localStorage.getItem('token');
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${Token}`
-      }
-    };
-    const res = await axios.put(`${import.meta.env.VITE_LARAVEL_BASE_URL}/updateTodo`, todo, config);
+   
+    const res = await axios.put(`${LARAVEL_SERVER}/api/updateTodo`, ...todoData);
     dispatch({
       type: UPDATE_TODO,
-      payload: res.data
+      payload: res.data.todo
     });
+    toast.success(res.data.message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    })
   } catch (error) {
-    console.error(error);
+     const errorMessage = error.response && error.response.data && error.response.data.message
+      ? error.response.data.message
+      : error.message;
+    dispatch({
+      type: GET_TODOS_FAIL
+    })
+    toast.error(errorMessage, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
   }
 };

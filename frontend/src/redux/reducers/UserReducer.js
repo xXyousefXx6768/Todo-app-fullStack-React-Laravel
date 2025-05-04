@@ -52,7 +52,7 @@ export default function  (state=initialState,action){
                 }
 
                 case LOGOUT_DONE:
-                localStorage.setItemItem('isAuthenticated',false)
+                localStorage.setItem('isAuthenticated',false)
                 return{
                     ...state,
                     user:null,

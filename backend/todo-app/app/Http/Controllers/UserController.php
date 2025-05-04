@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use PHPUnit\Exception;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cookie;
 
 class UserController extends Controller
 {
@@ -65,19 +67,18 @@ class UserController extends Controller
             'password' => 'required'
 
         ]);
-        $user = User::where('email', $validatedData['email'])->first();
-        if (!$user || !Hash::check($validatedData['password'], $user->password)) {
+        if (!Auth::attempt($validatedData)) {
             return response()->json([
                 'message' => 'The provided credentials are incorrect.',
             ], 422);
-
         }
-        $token = $user->createToken('auth_token')->plainTextToken;
-        $user->load('userTodos');
+        $userInfo = Auth::user()->load('userTodos');
+
+
         return response()->json([
             'message' => 'User log in successfully!',
-            'user' => $user,
-            'token' => $token
+            'user' => $userInfo,
+
         ], 201);
 
 
@@ -88,12 +89,15 @@ class UserController extends Controller
         try {
 
 
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+            auth()->guard('web')->logout();
+            Session::invalidate();
+            Session::regenerateToken();
+            $sessionCookie = Cookie::forget('laravel_session');
+            $csrfCookie = Cookie::forget('XSRF-TOKEN');
             return response()->json([
-                'message' => 'User logged out successfully!'
-            ], 200);
+                'message' => 'Logged out'
+            ] ,200 )->withCookie(cookie()->forget('laravel_session'))
+                ->withCookie(cookie()->forget('XSRF-TOKEN'));
         }catch (\Exception $e){
             return response()->json([
                 'message' => $e->getMessage()

@@ -143,8 +143,14 @@ export const login = ({ email, password }) => async (dispatch) => {
 };
 export const loadUserInfo = () => async (dispatch) => {
     try {
-        const res = await axios.get(`${LARAVEL_SERVER}/api/user`, {
+         
+        await axios.get(`${LARAVEL_SERVER}/sanctum/csrf-cookie`, {
             withCredentials: true
+        });
+
+
+        const res = await axios.get(`${LARAVEL_SERVER}/api/user`, {
+            withCredentials: true,
         });
         dispatch({
             type: LOGIN_DONE,
@@ -154,12 +160,20 @@ export const loadUserInfo = () => async (dispatch) => {
         });
         dispatch({
             type: GET_TODOS,
-            payload: res.data.user.user_todos
+            payload: res.data.user_todos
         });
+         console.log("✅ User info:", res.data);
+         console.log("✅ User todos:", res.data.user_todos);
     } catch (error) {
         console.error(error);
     }
 }
+
+function getCookieValue(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
+}
+
 export const logout = () => async (dispatch) => {
     try {
         console.log("📍 Getting CSRF token...");
@@ -167,8 +181,15 @@ export const logout = () => async (dispatch) => {
             withCredentials: true
         });
         console.log("✅ CSRF token:");
-       const res= await axios.post(`${LARAVEL_SERVER}/api/logoutUser`, {
-            withCredentials: true
+        const xsrfToken = getCookieValue("XSRF-TOKEN");
+          
+       const res= await axios.post(`${LARAVEL_SERVER}/api/logout`,null, {
+            withCredentials: true,
+            headers: {
+                "X-XSRF-TOKEN": decodeURIComponent(xsrfToken),
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest"
+            }
         });
         console.log("✅ Logout response:", res.data);
         dispatch({
@@ -195,7 +216,7 @@ export const logout = () => async (dispatch) => {
             ? error.response.data.message
             : "An unexpected error occurred";
 
-
+        console.log("📍 Logout error:", error.response?.data || error.message);
         toast.error(errorMessage, {
             position: "top-center",
             autoClose: 5000,
