@@ -16,7 +16,13 @@ use App\Http\Controllers\UserController;
 |
 */
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    $user = $request->user()->load('userTodos');
+
+    return response()->json([
+        'user' => $user,
+        'user_todos' => $user->userTodos
+    ]);
+
 });
 
 Route::post('/register', [UserController::class, 'createUser']);

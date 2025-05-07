@@ -87,17 +87,14 @@ class UserController extends Controller
     function logoutUser(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
-
-
             auth()->guard('web')->logout();
-            Session::invalidate();
-            Session::regenerateToken();
-            $sessionCookie = Cookie::forget('laravel_session');
-            $csrfCookie = Cookie::forget('XSRF-TOKEN');
-            return response()->json([
-                'message' => 'Logged out'
-            ] ,200 )->withCookie(cookie()->forget('laravel_session'))
-                ->withCookie(cookie()->forget('XSRF-TOKEN'));
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            Cookie::queue(Cookie::forget('laravel_session'));
+            return response()->json(['message' => 'Logged out'], 200)
+                ->withCookie(Cookie::forget('XSRF-TOKEN', '/', config('session.domain')));
         }catch (\Exception $e){
             return response()->json([
                 'message' => $e->getMessage()

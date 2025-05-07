@@ -2,6 +2,9 @@ import { ADD_TODO, REMOVE_TODO, UPDATE_TODO, GET_TODOS } from "../types/actionty
 
 const initialState = {
     todos: [],
+    pendingTodos : [],
+    completedTodos : []
+
 };
 
 export default function (state = initialState, action) {
@@ -9,7 +12,9 @@ export default function (state = initialState, action) {
         case GET_TODOS:
             return {
                 ...state,
-                todos: action.payload
+                todos: action.payload,
+                pendingTodos : action.payload.filter(todo => todo.status === 'pending'),
+                completedTodos : action.payload.filter(todo => todo.status === 'completed'),
             };
         case ADD_TODO:
             return {

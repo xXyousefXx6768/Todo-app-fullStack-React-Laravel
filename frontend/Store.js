@@ -8,7 +8,7 @@ import ModalReducer from "./src/redux/reducers/ModalReducer";
 
 const rootReducers= combineReducers({
     user:UserReducer,
-    todos:TodoReducer,
+    todo:TodoReducer,
     theme:DarkModeReducer,
     Modal:ModalReducer
 

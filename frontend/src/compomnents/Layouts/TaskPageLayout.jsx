@@ -4,11 +4,13 @@ import Filter from '../TaskComponents/Filter'
 import CreateTask from '../TaskComponents/CreateTask'
 import TaskCard from '../TaskComponents/TaskCard'
 import PersonalSection from '../TaskComponents/PersonalSection'
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { loadUserInfo } from '../../redux/actions/UserActions'
 function TaskPageLayout() {
 
   const dispatch= useDispatch()
+  const user = useSelector((state) => state.user.user);
+  const tasks = useSelector((state) => state.todo.todos);
 
 useEffect(() => {
   dispatch(loadUserInfo());
@@ -31,16 +33,15 @@ useEffect(() => {
        grid 
        grid-cols-[repeat(auto-fill,minmax(360px,1fr))] 
        gap-[1.5rem]'>
-        <TaskCard/>
-        <TaskCard/>
-        <TaskCard/>
-       <TaskCard />
+        {tasks.map((task) => (
+          <TaskCard key={task.id} task={task} />
+        ))}
        <CreateTask />
        </div>
         </div>
     </section>
      <section className='w-[26rem] !mt-[1rem] h-[calc(100%-5rem)]'>
-     <PersonalSection />
+     <PersonalSection  />
      </section>
    </main>
   )

@@ -11,6 +11,7 @@ const initialState={
     user: null,
     isAuthenticated: localStorage.getItem('isAuthenticated') === 'true' ,
     loading: false,
+    
 }
 
 export default function  (state=initialState,action){
@@ -36,10 +37,10 @@ export default function  (state=initialState,action){
             case LOGIN_DONE:
                 localStorage.setItem('isAuthenticated',true)
                return{
-                 ...state,
-                 ...payload,
-                 isAuthenticated:true,
-                 loading:false
+                ...state,
+                user: payload.user,
+                isAuthenticated: true,
+                loading: false
                }
                case LOGIN_FAIL:
                 localStorage.setItem('isAuthenticated',false)

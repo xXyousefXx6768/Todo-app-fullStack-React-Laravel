@@ -1,6 +1,10 @@
 import React from 'react'
-
+import { useDispatch, useSelector } from 'react-redux'
 function PersonalSection() {
+  const user = useSelector((state) => state.user.user);
+
+
+  
   return (
     <div>
         <div className="!m-6">
@@ -18,12 +22,20 @@ function PersonalSection() {
             hover:border-2 hover:border-white">
             <div>
             </div>
-            <div>
+            {
+              user? 
+              <div>
             <h1 className="flex flex-col text-xl">
             <span className=" font-medium">Hello,</span>
-            <span className="font-bold">Yousef amr </span>
+              <span className="font-bold"> {user.name}</span>
             </h1>
             </div>
+            :
+            <div className='animate-pulse'>
+            <h1 className="  h-3 w-28  bg-gray-300 rounded"></h1>
+            <h4 className="  h-3 w-12 !mt-2 bg-gray-300 rounded"></h4>
+            </div>
+            }
             </div>
             <div className="!mt-6  flex flex-col gap-8">
             <div className="grid  grid-cols-2 gap-4">
