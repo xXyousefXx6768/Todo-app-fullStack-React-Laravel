@@ -9,27 +9,32 @@ import {
 
 } from "../types/actiontypes";
 import { toast, Bounce } from "react-toastify";
-
+import { useSelector } from "react-redux";
 
 const LARAVEL_SERVER = import.meta.env.VITE_LARAVEL_BASE_URL;
 
 ///////////////add todo////////////////
 
-export const addTodo = (...todoData) => async (dispatch) => {
+export const addTodo = (todoData) => async (dispatch) => {
   try {
     
+    console.log("📍 Getting CSRF token...");
+    await axios.get(`${LARAVEL_SERVER}/sanctum/csrf-cookie`, {
+      withCredentials: true
+  });
 
    //////////////requestData////////////////////
-    const todo = { ...todoData };
+    
     const res = await axios.post(
-      `${LARAVEL_SERVER}/addTodo`, 
-      todo ,
+      `${LARAVEL_SERVER}/api/CreateTodo`, 
+      todoData,
       {withCredentials: true}
 
     );
+    console.log("✅ todo info:", res.data); 
     dispatch({
       type: ADD_TODO,
-      payload: res.data
+      payload:  res.data.todo
     });
 
     toast.success(res.data.message, {
@@ -49,6 +54,8 @@ export const addTodo = (...todoData) => async (dispatch) => {
     error.response && error.response.data && error.response.data.message
       ? error.response.data.message
       : error.message;
+      console.log(errorMessage);
+      console.log("📦 Request sent:", error.response.data.request)
     dispatch({
       type: ADD_TODO_FAIL
     })

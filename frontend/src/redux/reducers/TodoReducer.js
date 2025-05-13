@@ -17,9 +17,10 @@ export default function (state = initialState, action) {
                 completedTodos : action.payload.filter(todo => todo.status === 'completed'),
             };
         case ADD_TODO:
+            const newTodo = action.payload;
             return {
                 ...state,
-                todos: [...state.todos, action.payload]
+                todos: [...state.todos,newTodo]
             };
         case REMOVE_TODO:
             return {

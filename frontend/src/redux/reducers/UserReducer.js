@@ -4,7 +4,8 @@ import {
     LOGIN_DONE,
     LOGIN_FAIL,
     LOGOUT_DONE,
-    UPDATE_USER_INFO
+    UPDATE_USER_INFO,
+    SESSION_EXPIRED
 } from "../types/actiontypes";
 
 const initialState={
@@ -62,6 +63,17 @@ export default function  (state=initialState,action){
                     loading:false
 
                 }
+            
+            case SESSION_EXPIRED:
+                localStorage.setItem('isAuthenticated',false)
+                return{
+                    ...state,
+                    user:null,
+                    token:null,
+                    isAuthenticated:false,
+                    loading:false
+                }
+                 
                 case UPDATE_USER_INFO:
                     return{
                         ...state,

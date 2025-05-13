@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Symfony\Component\HttpFoundation\Cookie as SymfonyCookie;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -13,20 +13,20 @@ use Illuminate\Support\Facades\Cookie;
 
 class UserController extends Controller
 {
-    function createUser(Request $request): \Illuminate\Http\JsonResponse
+    public function createUser(Request $request): \Illuminate\Http\JsonResponse
     {
         $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'profile_image_url' => 'mimes:jpeg,jpg,png'
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'profile_image_url' => 'nullable|mimes:jpeg,jpg,png|max:2048', // 2MB Max
         ]);
 
         $defaultImage = 'images/user.png';
+        $imagePath = $defaultImage;
+
         if ($request->hasFile('profile_image_url')) {
             $imagePath = $request->file('profile_image_url')->store('profile_images', 'public');
-        } else {
-            $imagePath = $defaultImage;
         }
 
         try {
@@ -38,11 +38,14 @@ class UserController extends Controller
             ]);
 
             Auth::login($user);
+
+            // Load userTodos relationship
             $user->load('userTodos');
 
             return response()->json([
                 'message' => 'User created successfully!',
                 'user' => $user,
+                'user_todos' => $user->userTodos,
             ], 201);
 
         } catch (QueryException $e) {
@@ -51,7 +54,6 @@ class UserController extends Controller
                     'message' => 'This email is already registered!',
                 ], 409); // Conflict
             }
-
 
             return response()->json([
                 'message' => 'Database error: ' . $e->getMessage(),
@@ -84,22 +86,52 @@ class UserController extends Controller
 
     }
 
-    function logoutUser(Request $request): \Illuminate\Http\JsonResponse
-    {
-        try {
-            auth()->guard('web')->logout();
 
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
 
-            Cookie::queue(Cookie::forget('laravel_session'));
-            return response()->json(['message' => 'Logged out'], 200)
-                ->withCookie(Cookie::forget('XSRF-TOKEN', '/', config('session.domain')));
-        }catch (\Exception $e){
-            return response()->json([
-                'message' => $e->getMessage()
+public function logoutUser(Request $request): \Illuminate\Http\JsonResponse
+{
+    try {
+        Auth::guard('web')->logout();
 
-            ],500);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        if (config('session.driver') === 'database') {
+            \DB::table('sessions')->where('id', $request->session()->getId())->delete();
         }
+
+        $sessionCookie = new SymfonyCookie(
+            config('session.cookie'),
+            '',
+            now()->subMinutes(5),
+            config('session.path'),
+            config('session.domain'),
+            config('session.secure'),
+            config('session.http_only'),
+            false,
+            config('session.same_site') ?? null
+        );
+
+        $xsrfCookie = new SymfonyCookie(
+            'XSRF-TOKEN',
+            '',
+            now()->subMinutes(5),
+            config('session.path'),
+            config('session.domain'),
+            config('session.secure'),
+            false, // XSRF عادة مش HttpOnly
+            false,
+            config('session.same_site') ?? null
+        );
+
+        return response()->json(['message' => 'Logged out successfully'])
+            ->withCookie($sessionCookie)
+            ->withCookie($xsrfCookie);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => $e->getMessage()
+        ], 500);
     }
+}
 }

@@ -17,6 +17,7 @@
  export const GET_SINGLE_TODO='GET_SINGLE_TODO'
  export const GET_SINGLE_TODO_FAIL='GET_SINGLE_TODO_FAIL'
  export const DARK_MODE='DARK_MODE'
+ export const SESSION_EXPIRED='SESSION_EXPIRED'
  // actions/modalTypes.js
 // actions/modalTypes.js
 export const SET_OPEN_MODAL = 'SET_OPEN_MODAL';

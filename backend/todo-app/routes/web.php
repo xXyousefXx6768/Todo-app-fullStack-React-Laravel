@@ -26,3 +26,5 @@ Route::get('/user', function () {
     return response()->json(auth()->user());
 })->middleware('auth');
 
+
+

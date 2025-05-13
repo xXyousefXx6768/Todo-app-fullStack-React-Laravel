@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->boolean('status')->default(false);
+            $table->text('priority')->nullable();
             $table->foreignId('user_id')->constrained();
             $table->dateTime('started_at')->nullable();
             $table->timestamp('completed_at')->nullable();

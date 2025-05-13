@@ -5,7 +5,8 @@ import {
     LOGIN_FAIL,
     LOGOUT_DONE,
     UPDATE_USER_INFO,
-    UPDATE_USER_FAIL
+    UPDATE_USER_FAIL,
+    SESSION_EXPIRED
 } from "../types/actiontypes";
 import { toast, Bounce } from "react-toastify";
 
@@ -21,7 +22,7 @@ function hasXsrfCookie() {
     return document.cookie.includes('XSRF-TOKEN=');
 }
 
-function clearAllCookies() {
+ export function clearAllCookies() {
     document.cookie.split(";").forEach(cookie => {
         const name = cookie.split("=")[0].trim();
         document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
@@ -186,7 +187,28 @@ export const loadUserInfo = () => async (dispatch) => {
          console.log("✅ User info:", res.data);
          console.log("✅ User todos:", res.data.user_todos);
     } catch (error) {
-        console.error(error);
+        if (error.response?.status === 401) {
+            console.warn("❌ Session expired: No user data.");
+            toast.error("Session expired: No user data.", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            })
+            dispatch({
+                type: SESSION_EXPIRED
+            })
+            clearAllCookies()
+            console.log('session expired done')
+        }
+        console.error(error);   
+        
+
     }
 }
 

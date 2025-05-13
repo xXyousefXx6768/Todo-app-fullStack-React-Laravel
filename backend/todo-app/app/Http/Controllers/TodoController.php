@@ -12,18 +12,21 @@ class TodoController extends Controller
         $validate = Validator::make($req->all(), [
             'title' => 'required|max:100',
             'description' => 'required|max:255',
-            'started_at' => 'required|date',
             'status' => 'required|boolean',
             'completed_at' => 'nullable|date',
-            'user_id' => 'required|exists:users,id'
+            'priority' => 'required'
+
         ]);
 
         if ($validate->fails()) {
-            return response()->json($validate->errors(), 422);
+            return response()->json([
+                'errors' => $validate->errors(),
+                'request' => $req->all(),
+            ], 422);
         }
 
         $todo = Todo::create($req->only([
-            'title', 'description', 'started_at', 'status', 'completed_at', 'user_id'
+            'title', 'description', 'status', 'priority' , 'completed_at', 'user_id',
         ]));
 
         return response()->json([

@@ -12,7 +12,7 @@ use App\Models\User; // Import User model
 
 
 /**
- * 
+ *
  *
  * @property-read User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Todo newModelQuery()
@@ -49,7 +49,7 @@ class Todo extends Model
      * @var list<string>
      */
 
-    protected $fillable = ['title', 'description', 'started_at', 'status', 'completed_at', 'user_id'];
+    protected $fillable = ['title', 'description', 'started_at', 'status', 'priority' ,'completed_at', 'user_id'];
 
 
 

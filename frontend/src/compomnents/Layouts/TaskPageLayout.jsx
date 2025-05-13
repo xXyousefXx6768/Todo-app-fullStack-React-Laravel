@@ -1,15 +1,22 @@
 import React from 'react'
 import { useEffect } from 'react'
 import Filter from '../TaskComponents/Filter'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
 import CreateTask from '../TaskComponents/CreateTask'
 import TaskCard from '../TaskComponents/TaskCard'
 import PersonalSection from '../TaskComponents/PersonalSection'
 import { useDispatch,useSelector } from 'react-redux'
+import { logout } from '../../redux/actions/UserActions'
 import { loadUserInfo } from '../../redux/actions/UserActions'
+import { clearAllCookies } from '../../redux/actions/UserActions';
 function TaskPageLayout() {
-
+ 
   const dispatch= useDispatch()
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+   
   const tasks = useSelector((state) => state.todo.todos);
 
 useEffect(() => {
@@ -36,7 +43,9 @@ useEffect(() => {
         {tasks.map((task) => (
           <TaskCard key={task.id} task={task} />
         ))}
+        
        <CreateTask />
+       
        </div>
         </div>
     </section>
