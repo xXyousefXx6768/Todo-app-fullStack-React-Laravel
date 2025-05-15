@@ -1,5 +1,7 @@
 import React from 'react'
+import { PieChart } from '@mui/x-charts/PieChart';
 import { useDispatch, useSelector } from 'react-redux'
+import { data } from 'react-router';
 function PersonalSection() {
   const user = useSelector((state) => state.user.user);
   const tasks = useSelector((state) => state.todo.todos);
@@ -8,8 +10,10 @@ function PersonalSection() {
  
 
   const ChartData=[
-    {id:1,label:'Pending',value:pendingTodos, color: '#fb923c'},
-    {id:2,label:'Completed',value:completedTodos, color: '#22c55e'},
+   
+      { id: 1, label: 'Pending', value: pendingTodos.length || 0, color: '#fb923c' },
+      { id: 2, label: 'Completed', value: completedTodos.length || 0, color: '#22c55e' },
+    
   ]
 
 
@@ -102,8 +106,21 @@ function PersonalSection() {
                                         <h3 className="!mt-8 dark:text-textDark font-medium">Activity</h3>
                                         </div>
                                         <div className='!mt-4 !mx-6'>
-                                           <div className='!rounded-xl sm:h-64 sm:!mb-6  flex flex-col !border-2 !border-white shadow-none bg-[#EDEDED] dark:bg-CardDark'>
-
+                                           <div className='!rounded-xl  sm:!mb-6  flex flex-col !border-2 !border-white shadow-none bg-[#EDEDED] dark:bg-CardDark'>
+                                               <div className='flex flex-col space-y-1.5 !p-6 items-center !pb-0'>
+                                               <h3 class="font-semibold dark:text-textDark leading-none tracking-tight">Comleted vs Pending Tasks</h3>
+                                               <p class="text-sm dark:text-textDark text-muted-foreground">Task completion status.</p>
+                                               </div>
+                                               <div className='!p-6 !pt-0 flex flex-1 items-center !pb-0'>
+                                                  <PieChart
+                                                  series={[{
+                                                    data:ChartData,
+                                                   
+                                                  }]}
+                                                 
+                                                  height={200}
+                                                  />
+                                               </div>
                                            </div>
                                         </div>
     </div>
