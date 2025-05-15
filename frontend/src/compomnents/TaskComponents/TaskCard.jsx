@@ -13,12 +13,12 @@ function TaskCard({task}) {
   return (
     <div className='h-[16rem] !px-4 !py-3 flex flex-col gap-4 shadow-sm bg-[#f9f9f9] dark:bg-CardDark dark:!border-BordarDark dark:text-textDark rounded-lg border-2 border-white'>
       <div>
-        <h4 class="font-bold text-2xl">{task.title}</h4>
-        <p>{task.description}</p>
+        <h4 class="font-bold text-2xl">{task.title?task.title:"No title"}</h4>
+        <p>{task.description?task.description:"No description"}</p>
         </div>
         <div className="!mt-auto flex justify-between items-center">
-         <p class="text-sm text-gray-400">{task.created_at}</p>
-         <p class="text-sm font-bold text-green-500">{task.priority}</p>
+         <p class="text-sm text-gray-400">{task.created_at?task.created_at:"No date"}</p>
+         <p class="text-sm font-bold text-green-500">{task.priority?task.priority:"No priority"}</p>
          <div>
           <div class="flex items-center gap-3 text-gray-400 text-[1.2rem]">
             {icons.map((icon, index) => (

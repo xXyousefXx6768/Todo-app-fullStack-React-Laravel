@@ -12,7 +12,12 @@ html, body, #root {
     --color-textDark: #fff;
     --color-BordarDark: #273851;
     --color-CardDark: #4a5b8185;
+    --breakpoint-sm: 240px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 900px;
+    
   }
+  
 *{
     margin: 0;
     padding: 0;

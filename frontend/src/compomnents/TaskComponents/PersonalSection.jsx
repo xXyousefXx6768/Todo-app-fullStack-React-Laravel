@@ -2,16 +2,27 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 function PersonalSection() {
   const user = useSelector((state) => state.user.user);
+  const tasks = useSelector((state) => state.todo.todos);
+  const pendingTodos= useSelector((state) => state.todo.pendingTodos);
+  const completedTodos= useSelector((state) => state.todo.completedTodos);
+ 
+
+  const ChartData=[
+    {id:1,label:'Pending',value:pendingTodos, color: '#fb923c'},
+    {id:2,label:'Completed',value:completedTodos, color: '#22c55e'},
+  ]
 
 
   
   return (
     <div>
-        <div className="!m-6">
+        <div className="!m-6 flex flex-col align-center  ">
             <div className="!px-2 !py-4 
             flex 
             items-center 
             gap-3 
+            sm:w-2/3
+            lg:w-full
             dark:text-textDark
             bg-[#E6E6E6]/20 !
             rounded-[0.8rem] 
@@ -89,6 +100,11 @@ function PersonalSection() {
                                         </div>
                                         </div>
                                         <h3 className="!mt-8 dark:text-textDark font-medium">Activity</h3>
+                                        </div>
+                                        <div className='!mt-4 !mx-6'>
+                                           <div className='!rounded-xl sm:h-64 sm:!mb-6  flex flex-col !border-2 !border-white shadow-none bg-[#EDEDED] dark:bg-CardDark'>
+
+                                           </div>
                                         </div>
     </div>
   )

@@ -13,8 +13,8 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 todos: action.payload,
-                pendingTodos : action.payload.filter(todo => todo.status === 'pending'),
-                completedTodos : action.payload.filter(todo => todo.status === 'completed'),
+                pendingTodos : action.payload.filter(todo => todo.status == 0),
+                completedTodos : action.payload.filter(todo => todo.status == 1),
             };
         case ADD_TODO:
             const newTodo = action.payload;
