@@ -2,12 +2,21 @@ import React from 'react'
 import { faStar,faPenToSquare } from '@fortawesome/free-regular-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {removeTodo} from "../../redux/actions/TodoAction"
+import { useDispatch } from 'react-redux'
 import { icon } from '@fortawesome/fontawesome-svg-core'
 function TaskCard({task}) {
+
+    const dispatch = useDispatch();
+
+    const handleDelete = () => {
+      dispatch(removeTodo(task.id));
+    };
+
   const icons = [
-    {icon:faStar,color:"text-gray-400"},
-    {icon:faPenToSquare,color:"text-[#00A1F1]"},
-    {icon:faTrash,color:"text-[#F65314]"},
+    {icon:faStar,color:"text-gray-400",onclick:null},
+    {icon:faPenToSquare,color:"text-[#00A1F1]",onclick:null},
+    {icon:faTrash,color:"text-[#F65314]",onclick:handleDelete},
   ]
    console.log(task);
   return (
@@ -26,7 +35,7 @@ function TaskCard({task}) {
          <div>
           <div class="flex items-center gap-3 text-gray-400 text-[1.2rem]">
             {icons.map((icon, index) => (
-            <button class="">
+            <button key={index} onClick={icon.onclick} >
               <FontAwesomeIcon icon={icon.icon} className={icon.color} />
               </button>
               
