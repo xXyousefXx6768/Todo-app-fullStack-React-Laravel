@@ -17,7 +17,11 @@ function TaskCard({task}) {
         <p>{task.description?task.description:"No description"}</p>
         </div>
         <div className="!mt-auto flex justify-between items-center">
-         <p class="text-sm text-gray-400">{task.created_at?task.created_at:"No date"}</p>
+         <p className="text-sm text-gray-400">
+  {task.created_at
+    ? new Date(task.created_at).toLocaleDateString('en-GB')
+    : 'No date'}
+</p>
          <p class="text-sm font-bold text-green-500">{task.priority?task.priority:"No priority"}</p>
          <div>
           <div class="flex items-center gap-3 text-gray-400 text-[1.2rem]">

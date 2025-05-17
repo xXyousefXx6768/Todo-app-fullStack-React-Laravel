@@ -30,7 +30,7 @@ function App() {
    
   return (
     <>
-      <main className={`h-screen ${isDark ? 'dark' : 'light'} overflow-hidden min-h-screen flex`}>
+      <main className={`h-screen ${isDark ? 'dark' : 'light'}  dark:bg-dark bg-[#f9f9f9]  overflow-hidden min-h-screen flex`}>
         <ToastContainer />
         <SideBar />
         <section className="flex flex-col h-full w-full">
@@ -51,6 +51,24 @@ function App() {
                 <TaskPageLayout />
               </ProtectedRoute>
             } />
+            
+            <Route path="/completed" element={
+                <ProtectedRoute>
+                  <TaskPageLayout />
+                </ProtectedRoute>
+               } />
+
+            <Route path="/active" element={
+                 <ProtectedRoute>
+                 <TaskPageLayout />
+               </ProtectedRoute>
+                 } />
+
+            <Route path="/pending" element={
+                 <ProtectedRoute>
+                  <TaskPageLayout />
+                </ProtectedRoute>
+                  } />
 
           </Routes>
         </section>

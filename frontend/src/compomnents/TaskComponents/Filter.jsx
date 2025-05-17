@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
-function Filter() {
-    const [activeIndex, setActiveIndex] = useState(0);
+function Filter({ activeIndex, setActiveIndex }) {
+    
 
     const priorities = ["All", "Low", "Medium", "High"];
   return (

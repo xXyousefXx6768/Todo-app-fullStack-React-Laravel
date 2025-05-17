@@ -1,5 +1,6 @@
 import React from 'react'
 import { PieChart } from '@mui/x-charts/PieChart';
+
 import { useDispatch, useSelector } from 'react-redux'
 import { data } from 'react-router';
 function PersonalSection() {
@@ -7,7 +8,7 @@ function PersonalSection() {
   const tasks = useSelector((state) => state.todo.todos);
   const pendingTodos= useSelector((state) => state.todo.pendingTodos);
   const completedTodos= useSelector((state) => state.todo.completedTodos);
- 
+  const isDark = useSelector((state) => state.theme.isDarkMode);
 
   const ChartData=[
    
@@ -16,6 +17,9 @@ function PersonalSection() {
     
   ]
 
+
+  
+  const labelColor = isDark ? '#ffffff' : '#000000';
 
   
   return (
@@ -64,7 +68,7 @@ function PersonalSection() {
                     <span className="font-medium 
                     text-4xl 
                     dark:text-textDark
-                    text-[#333]"> 4</span>
+                    text-[#333]">{tasks.length} </span>
                         </p>
                         </div>
                         <div className="text-gray-400 dark:text-textDark">
@@ -77,7 +81,7 @@ function PersonalSection() {
                                 <span className="font-medium 
                                 text-4xl
                                 dark:text-textDark 
-                                text-[#333]">3</span>
+                                text-[#333]">{pendingTodos.length}</span>
                                 </p>
                                 </div>
                                 <div className="text-gray-400 dark:text-textDark">
@@ -87,7 +91,7 @@ function PersonalSection() {
                                     left-[1px] top-1/2 
                                     translate-y-[-50%] 
                                     bg-orange-400 !rounded-[5px]"></span>
-                                    <span className="font-medium dark:text-textDark text-4xl text-[#333]">3</span>
+                                    <span className="font-medium dark:text-textDark text-4xl text-[#333]">{pendingTodos.length}</span>
                                     </p>
                                     </div>
                                     <div className="text-gray-400 dark:text-textDark">
@@ -98,7 +102,7 @@ function PersonalSection() {
                                         translate-y-[-50%] 
                                         bg-green-400 !rounded-[5px]">
                                         </span>
-                                        <span className="font-medium dark:text-textDark text-4xl text-[#333]">1</span>
+                                        <span className="font-medium dark:text-textDark text-4xl text-[#333]">{completedTodos.length}</span>
                                         </p>
                                         </div>
                                         </div>
@@ -111,15 +115,28 @@ function PersonalSection() {
                                                <h3 class="font-semibold dark:text-textDark leading-none tracking-tight">Comleted vs Pending Tasks</h3>
                                                <p class="text-sm dark:text-textDark text-muted-foreground">Task completion status.</p>
                                                </div>
-                                               <div className='!p-6 !pt-0 flex flex-1 items-center !pb-0'>
-                                                  <PieChart
-                                                  series={[{
-                                                    data:ChartData,
-                                                   
-                                                  }]}
-                                                 
-                                                  height={200}
-                                                  />
+                                               <div className='flex justify-center items-center !px-4 !pt-2'>
+                                               <PieChart
+                                                series={[{
+                                                data: ChartData,
+                                                innerRadius: 50,
+                                               outerRadius: 100,
+                                               margin: {bottom:5},
+                                               paddingAngle: 6,
+                                               cornerRadius: 5,
+                                               highlightScope: { faded: 'global', highlighted: 'item' },
+                                               faded: { additionalRadius: -30, color: 'gray' },
+                                               valueFormatter: (v) => `${v.value}`,
+                                               cx: 150,
+                                               cy: 150,
+                                                label: {
+                                               color: labelColor,
+                                               }
+                                               }]}
+                                                height={350}
+                                                width={400}
+                                             
+                                             />
                                                </div>
                                            </div>
                                         </div>
