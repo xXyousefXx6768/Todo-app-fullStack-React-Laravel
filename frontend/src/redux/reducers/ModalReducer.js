@@ -2,7 +2,7 @@
 import { SET_OPEN_MODAL, SET_CLOSE_MODAL } from '../types/actiontypes';
 
 const initialState = {
-  openModal: false,
+  openModal: null,
 };
 
  export default function (state = initialState, action)  {
@@ -10,7 +10,7 @@ const initialState = {
     case SET_OPEN_MODAL:
       return { ...state, openModal: action.payload };
       case SET_CLOSE_MODAL:
-        return { ...state, openModal: action.payload };
+        return { ...state, openModal: null };
     default:
       return state;
   }
