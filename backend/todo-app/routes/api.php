@@ -34,6 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserController::class, 'logoutUser']);
     Route::get('/FindTodo', [TodoController::class,'find']);
     Route::post('/CreateTodo', [TodoController::class,'store']);
-    Route::put('/todos/{todo}', [TodoController::class, 'update']);
+    Route::put('/updateTodo/{id}', [TodoController::class, 'update']);
     Route::delete('/removeTodo/{todo}', [TodoController::class, 'destroy']);
 });

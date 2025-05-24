@@ -1,25 +1,36 @@
 import React from 'react'
 import { faStar,faPenToSquare } from '@fortawesome/free-regular-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {removeTodo} from "../../redux/actions/TodoAction"
-import { useDispatch } from 'react-redux'
+import {setOpenModal} from '../../redux/actions/ModalAction'
+import UpdateTaskModal from './UpdateTaskModal'
+import { useDispatch, useSelector } from 'react-redux'
 import { icon } from '@fortawesome/fontawesome-svg-core'
 function TaskCard({task}) {
-
+   const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    const isOpen = useSelector((state) => state.Modal.openModal);
     const handleDelete = () => {
       dispatch(removeTodo(task.id));
     };
 
+   console.log(isOpen+':isOpen');
+
+   const handleOpenModal = () => {
+    dispatch(setOpenModal("update"));
+    navigate(`/task/update/${task.id}`); 
+  };
+
   const icons = [
     {icon:faStar,color:"text-gray-400",onclick:null},
-    {icon:faPenToSquare,color:"text-[#00A1F1]",onclick:null},
+    {icon:faPenToSquare,color:"text-[#00A1F1]",onclick: () => handleOpenModal()},
     {icon:faTrash,color:"text-[#F65314]",onclick:handleDelete},
   ]
    console.log(task);
   return (
+    <>
     <div className='h-[16rem] !px-4 !py-3 flex flex-col gap-4 shadow-sm bg-[#f9f9f9] dark:bg-CardDark dark:!border-BordarDark dark:text-textDark rounded-lg border-2 border-white'>
       <div>
         <h4 class="font-bold text-2xl">{task.title?task.title:"No title"}</h4>
@@ -44,7 +55,8 @@ function TaskCard({task}) {
                     </div>
                     </div>
       </div>
-
+      {isOpen === 'update' && <UpdateTaskModal task={task} />}
+   </>
   )
 }
 

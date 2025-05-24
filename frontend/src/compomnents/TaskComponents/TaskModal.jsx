@@ -21,7 +21,6 @@ function TaskModal() {
     const payload = {
       ...data,
       status: data.status === 'true'? true : false,
-      
       user_id: user.id
     }
     console.log("Form data:", payload)

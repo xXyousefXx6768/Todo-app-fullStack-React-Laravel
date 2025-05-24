@@ -62,7 +62,10 @@ const filteredTasks =
         <div className=' !p-2 custom-scrollbar dark:scrollbar-dark overflow-auto'>
     <div class="flex dark:text-textDark !mt-1 !p-4 justify-between">
         <h1 class="text-2xl font-bold">
-        {path === '/task' ? 'All Tasks' : path.replace('/', '') + ' Tasks'}
+        {path.startsWith('/task/update') || path === '/task' 
+            ? 'All Tasks' 
+           : path.replace('/', '') + ' Tasks'}
+
           </h1>
         <Filter activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
     </div>

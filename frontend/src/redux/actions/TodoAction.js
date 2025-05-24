@@ -119,10 +119,12 @@ export const removeTodo = (id) => async (dispatch) => {
 };
 
 // Update Todo
-export const updateTodo = (...todoData) => async (dispatch) => {
+export const updateTodo = (todoData) => async (dispatch) => {
   try {
-   
-    const res = await axios.put(`${LARAVEL_SERVER}/api/updateTodo`, ...todoData);
+    const { id, ...data } = todoData;
+    console.log('id', id);
+    console.log("Sending data to backend:", data);
+    const res = await axios.put(`${LARAVEL_SERVER}/api/updateTodo/${id}`, data);
     dispatch({
       type: UPDATE_TODO,
       payload: res.data.todo

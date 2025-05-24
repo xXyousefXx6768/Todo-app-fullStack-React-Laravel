@@ -14,7 +14,7 @@ class TodoController extends Controller
             'description' => 'required|max:255',
             'status' => 'required|boolean',
             'completed_at' => 'nullable|date',
-            'priority' => 'required'
+            'priority' => 'required|in:low,medium,high'
 
         ]);
 
@@ -34,13 +34,15 @@ class TodoController extends Controller
             'todo' => $todo
         ], 201);
     }
-    function update(Request $req, Todo $todo): \Illuminate\Http\JsonResponse
+    function update(Request $req, $id): \Illuminate\Http\JsonResponse
     {
+        $todo = Todo::findOrFail($id);
         $validate = Validator::make($req->all(), [
-            'title' => 'required|max:100',
-            'description' => 'required|max:255',
-            'started_at' => 'required|date',
-            'status' => 'required|boolean',
+            'title' => 'max:100',
+            'description' => 'max:255',
+            'completed_at' => 'date',
+            'status' => 'boolean',
+            'priority' => 'in:low,medium,high'
 
         ]);
         if ($validate->fails()) {
@@ -48,7 +50,7 @@ class TodoController extends Controller
 
         }
         $todo->update($req->only([
-            'title', 'description', 'started_at', 'status'
+            'title', 'description', 'completed_at', 'status', 'priority'
         ]));
         return response()->json([
             'message' => 'Todo updated successfully!',

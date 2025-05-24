@@ -30,12 +30,7 @@ function TopBar() {
         <p>{content}</p>
       </div>
       <div className="content-2 justify-between h-[50px] flex items-center gap-[4.4rem]">
-        <div className="pl-5">
-        <button className=" !ml-[16px] p-3 w-[179px] h-[50px] !bg-[#3aafae] text-white !rounded-[50px] !hover:bg-[#00A1F1] hover:text-white transition-all duration-200 ease-in-out  font-medium ">
-          <p className=" ">Login / Register</p>
-        </button>
-        </div>
-
+       
         <div className="icon-box w-44 flex justify-evenly">
           {icons.map((item, index) => (
             <a
