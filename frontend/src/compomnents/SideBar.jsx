@@ -9,6 +9,7 @@ import IconLogout from '../icons/IconLogout'
 import IconFileCheck from '../icons/IconFileCheck'
 import IconGrid from '../icons/IconGrid'
 import IconStopWatch from '../icons/IconStopWatch'
+import IconStar from '../icons/IconStar';
 
 function SideBar() {
   const { pathname } = useLocation();
@@ -17,7 +18,7 @@ function SideBar() {
         return pathname === link ? "#3aafae" : "#71717a";
       };
    const authPath= location.pathname === "/auth";
-   const dispatch=useDispatch();
+   const dispatch= useDispatch();
     const NavItems=[
         {
            icon:<IconGrid strokeColor={getStrokeColor('/')}  />,
@@ -39,6 +40,12 @@ function SideBar() {
             link:"/pending",
             label:"Pending",
         },
+        {
+            icon:<IconStar strokeColor={getStrokeColor('/starred')} />,
+            link:"/starred",
+            label:"Starred",
+        },
+        
         
     ]
 

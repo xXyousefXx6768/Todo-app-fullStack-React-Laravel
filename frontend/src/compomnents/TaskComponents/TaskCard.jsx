@@ -3,7 +3,7 @@ import { faStar,faPenToSquare } from '@fortawesome/free-regular-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {removeTodo} from "../../redux/actions/TodoAction"
+import {removeTodo,SetFavTodo} from "../../redux/actions/TodoAction"
 import {setOpenModal} from '../../redux/actions/ModalAction'
 import UpdateTaskModal from './UpdateTaskModal'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,6 +16,10 @@ function TaskCard({task}) {
       dispatch(removeTodo(task.id));
     };
 
+    const handleFav = () => {
+      dispatch(SetFavTodo(task));
+    };
+
    console.log(isOpen+':isOpen');
 
    const handleOpenModal = () => {
@@ -24,7 +28,7 @@ function TaskCard({task}) {
   };
 
   const icons = [
-    {icon:faStar,color:"text-gray-400",onclick:null},
+    {icon:faStar,color:"text-gray-400",onclick:handleFav},
     {icon:faPenToSquare,color:"text-[#00A1F1]",onclick: () => handleOpenModal()},
     {icon:faTrash,color:"text-[#F65314]",onclick:handleDelete},
   ]

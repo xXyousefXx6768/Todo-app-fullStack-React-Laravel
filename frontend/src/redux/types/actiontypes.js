@@ -15,11 +15,14 @@
  export const GET_TODOS='GET_TODOS'
  export const GET_TODOS_FAIL='GET_TODOS_FAIL'
  export const GET_SINGLE_TODO='GET_SINGLE_TODO'
+ export const SET_FAV_TODO='SET_FAV_TODO'
+ export const SET_FAV_TODO_FAIL='SET_FAV_TODO_FAIL'
+ export const GET_FAV_TODOS='GET_FAV_TODOS'
+ export const GET_FAV_TODOS_FAIL='GET_FAV_TODOS_FAIL'
  export const GET_SINGLE_TODO_FAIL='GET_SINGLE_TODO_FAIL'
  export const DARK_MODE='DARK_MODE'
  export const SESSION_EXPIRED='SESSION_EXPIRED'
- // actions/modalTypes.js
-// actions/modalTypes.js
+ 
 export const SET_OPEN_MODAL = 'SET_OPEN_MODAL';
 export const SET_CLOSE_MODAL = 'SET_CLOSE_MODAL';
 

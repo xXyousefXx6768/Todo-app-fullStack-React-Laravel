@@ -75,6 +75,11 @@ function App() {
                   <TaskPageLayout />
                 </ProtectedRoute>
                   } />
+            <Route path='/starred' element={
+                 <ProtectedRoute>
+                  <TaskPageLayout />
+                </ProtectedRoute>
+                  } />
 
           </Routes>
         </section>

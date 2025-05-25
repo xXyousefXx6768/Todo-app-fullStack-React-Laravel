@@ -2,14 +2,11 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import Filter from '../TaskComponents/Filter'
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios'
 import CreateTask from '../TaskComponents/CreateTask'
 import TaskCard from '../TaskComponents/TaskCard'
 import PersonalSection from '../TaskComponents/PersonalSection'
 import { useDispatch,useSelector } from 'react-redux'
-import { logout } from '../../redux/actions/UserActions'
 import { loadUserInfo } from '../../redux/actions/UserActions'
-import { clearAllCookies } from '../../redux/actions/UserActions';
 function TaskPageLayout() {
  
   const dispatch= useDispatch()
@@ -18,8 +15,10 @@ function TaskPageLayout() {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const tasks = useSelector((state) => state.todo.todos);
   const pendingTodos= useSelector((state) => state.todo.pendingTodos);
+  const StarredTodos= useSelector((state) => state.todo.favTodos);
   const completedTodos= useSelector((state) => state.todo.completedTodos);
 
+  console.log("StarredTodos:", StarredTodos);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const priorities = ["All", "Low", "Medium", "High"];
@@ -38,6 +37,8 @@ if (path === '/completed') {
   AllTasks = pendingTodos 
 } else if (path === '/pending') {
   AllTasks = pendingTodos 
+}else if (path === '/starred') {
+  AllTasks= StarredTodos
 }
 
 

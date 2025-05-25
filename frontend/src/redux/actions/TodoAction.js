@@ -6,6 +6,10 @@ import {
   GET_TODOS,
   ADD_TODO_FAIL,
   GET_TODOS_FAIL,
+  SET_FAV_TODO,
+  SET_FAV_TODO_FAIL,
+  GET_FAV_TODOS,
+  GET_FAV_TODOS_FAIL
 
 } from "../types/actiontypes";
 import { toast, Bounce } from "react-toastify";
@@ -130,6 +134,47 @@ export const updateTodo = (todoData) => async (dispatch) => {
       payload: res.data.todo
     });
     toast.success(res.data.message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    })
+  } catch (error) {
+     const errorMessage = error.response && error.response.data && error.response.data.message
+      ? error.response.data.message
+      : error.message;
+    dispatch({
+      type: GET_TODOS_FAIL
+    })
+    toast.error(errorMessage, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
+  }
+};
+
+export const SetFavTodo = (todo) => async (dispatch, getState) => {
+  try {
+    const favs = getState().todo.favTodos || [];
+    const updatedFavs = [...favs, todo];
+    localStorage.setItem('favTodos', JSON.stringify(updatedFavs));
+    dispatch({
+      type: SET_FAV_TODO,
+      payload: updatedFavs
+    });
+    toast.success('Todo marked as favorite', {
       position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,
