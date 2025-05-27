@@ -18,6 +18,7 @@ import { ToastContainer } from 'react-toastify';
 function App() {
 
   const isDark = useSelector((state) => state.theme.isDarkMode);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
    const user = useSelector((state) => state.user.user);
    const token= useSelector((state) => state.user.token);
    const isloading= useSelector((state) => state.user.loading);
@@ -32,9 +33,9 @@ function App() {
     <>
       <main className={`h-screen ${isDark ? 'dark' : 'light'}  dark:bg-dark bg-[#f9f9f9]  overflow-hidden min-h-screen flex`}>
         <ToastContainer />
-        <SideBar />
+        <SideBar isOpen={isSidebarOpen} closeSidebar={() => setIsSidebarOpen(false)} />
         <section className="flex flex-col h-full w-full">
-          <Topbar />
+          <Topbar toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
           <Routes>
 
           

@@ -40,7 +40,7 @@ function TaskCard({task}) {
         <h4 class="font-bold text-2xl">{task.title?task.title:"No title"}</h4>
         <p>{task.description?task.description:"No description"}</p>
         </div>
-        <div className="!mt-auto flex justify-between items-center">
+        <div className="!mt-auto flex lg:flex-row sm:flex-col   justify-between items-center">
          <p className="text-sm text-gray-400">
   {task.created_at
     ? new Date(task.created_at).toLocaleDateString('en-GB')
@@ -48,7 +48,7 @@ function TaskCard({task}) {
 </p>
          <p class="text-sm font-bold text-green-500">{task.priority?task.priority:"No priority"}</p>
          <div>
-          <div class="flex items-center gap-3 text-gray-400 text-[1.2rem]">
+          <div class="flex  items-center gap-3 text-gray-400 text-[1.2rem]">
             {icons.map((icon, index) => (
             <button key={index} onClick={icon.onclick} >
               <FontAwesomeIcon icon={icon.icon} className={icon.color} />

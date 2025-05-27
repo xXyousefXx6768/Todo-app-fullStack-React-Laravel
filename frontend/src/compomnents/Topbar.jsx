@@ -3,11 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { toggleDarkMode } from "../redux/actions/DarkModeAction";
 
-function TopBar() {
+function TopBar({ toggleSidebar }) {
   const isDark = useSelector((state) => state.theme.isDarkMode);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -15,13 +16,17 @@ function TopBar() {
   const content = location.pathname === "/auth" ? "Please Login or Register to view your tasks" : "You have 0 active tasks";
 
   const icons = [
-    { icon: faGithub, action: () => window.open("https://github.com", "_blank") },
+    { icon: faGithub, action: () => window.open("https://github.com/xXyousefXx6768", "_blank") },
     { icon: faMoon, action: () => dispatch(toggleDarkMode()) },
     { icon: faUser, action: () => alert("User icon clicked!") },
   ];
 
   return (
-    <div  className='flex !p-3 dark:bg-dark  w-full bg-[#f9f9f9] justify-between '>
+    <div  className='flex lg:flex-row flex-row-reverse !p-3 dark:bg-dark  w-full bg-[#f9f9f9] justify-between '>
+      <button onClick={toggleSidebar} className="text-2xl lg:hidden flex justify-center text-[#3aafae]">
+        <FontAwesomeIcon icon={faBars} />
+      </button>
+
       <div className="content-1 dark:text-textDark">
         <h3 className="font-medium">
           <span role="img" aria-label="wave">👋</span>
@@ -29,7 +34,7 @@ function TopBar() {
         </h3>
         <p>{content}</p>
       </div>
-      <div className="content-2 justify-between h-[50px] flex items-center gap-[4.4rem]">
+      <div className="content-2 justify-between lg:flex h-[50px] hidden items-center gap-[4.4rem]">
        
         <div className="icon-box w-44 flex justify-evenly">
           {icons.map((item, index) => (

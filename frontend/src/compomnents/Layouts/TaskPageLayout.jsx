@@ -61,7 +61,7 @@ const filteredTasks =
     <section className=' w-full h-auto  flex flex-col !p-3 dark:bg-dark !border-2 bg-[#EDEDED] !border-white dark:!border-BordarDark !rounded-[1.5rem] 
       '>
         <div className=' !p-2 custom-scrollbar dark:scrollbar-dark overflow-auto'>
-    <div class="flex dark:text-textDark !mt-1 !p-4 justify-between">
+    <div class="flex sm:flex-col lg:flex-row dark:text-textDark !mt-1 !p-4   justify-between">
         <h1 class="text-2xl font-bold">
         {path.startsWith('/task/update') || path === '/task' 
             ? 'All Tasks' 
@@ -75,7 +75,8 @@ const filteredTasks =
        !p-6
        !mt-6 
        grid 
-       grid-cols-[repeat(auto-fill,minmax(360px,1fr))] 
+       [grid-template-columns:repeat(auto-fill,minmax(200px,1fr))]
+    lg:[grid-template-columns:repeat(auto-fill,minmax(360px,1fr))]
        gap-[1.5rem]'>
         {filteredTasks.map((task) => (
               <TaskCard key={task.id} task={task} />
