@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Symfony\Component\HttpFoundation\Cookie as SymfonyCookie;
 use App\Models\User;
 use Illuminate\Database\QueryException;
@@ -8,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use PHPUnit\Exception;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cookie;
 
@@ -19,14 +22,14 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'profile_image_url' => 'nullable|mimes:jpeg,jpg,png|max:2048', // 2MB Max
+            'profile_img_url' => 'nullable|mimes:jpeg,jpg,png|max:2048', // 2MB Max
         ]);
 
         $defaultImage = 'images/user.png';
         $imagePath = $defaultImage;
 
         if ($request->hasFile('profile_image_url')) {
-            $imagePath = $request->file('profile_image_url')->store('profile_images', 'public');
+            $imagePath = $request->file('profile_img_url')->store('profile_images', 'public');
         }
 
         try {
@@ -34,7 +37,7 @@ class UserController extends Controller
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
-                'profile_image_url' => $imagePath,
+                'profile_img_url' => $imagePath,
             ]);
 
             Auth::login($user);
@@ -134,4 +137,56 @@ public function logoutUser(Request $request): \Illuminate\Http\JsonResponse
         ], 500);
     }
 }
+
+    /**
+     * @throws CouldNotLoadImage
+     */
+    public function updateUser(Request $req, $id): \Illuminate\Http\JsonResponse
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found.'
+            ], 404);
+        }
+
+        $validatedData = \Validator::make($req->all(), [
+            'name' => 'nullable|string|max:255',
+            'profile_img_url' => 'nullable|mimes:jpeg,jpg,png|max:2048',
+        ]);
+
+        if ($validatedData->fails()) {
+            return response()->json([
+                'message' => $validatedData->errors()->first()
+            ], 422);
+        }
+
+        $dataToUpdate = [];
+
+        if ($req->filled('name')) {
+            $dataToUpdate['name'] = $req->input('name');
+        }
+
+        if ($req->hasFile('profile_img_url')) {
+            $image = $req->file('profile_img_url');
+            $filename = 'user_' . time() . '.' . $image->getClientOriginalExtension();
+
+            $path = $image->storeAs('public/uploads', $filename);
+
+            // Resize and save
+            Image::make(storage_path('app/' . $path))
+                ->resize(300, 300)
+                ->save();
+
+            $dataToUpdate['profile_img_url'] = 'storage/uploads/' . $filename;
+        }
+
+        $user->update($dataToUpdate);
+
+        return response()->json([
+            'message' => 'User updated successfully!',
+            'user' => $user->fresh(), 
+        ], 200);
+    }
 }

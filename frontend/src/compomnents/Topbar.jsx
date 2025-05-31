@@ -10,10 +10,11 @@ import { toggleDarkMode } from "../redux/actions/DarkModeAction";
 
 function TopBar({ toggleSidebar }) {
   const isDark = useSelector((state) => state.theme.isDarkMode);
+  const activeTasks = useSelector((state) => state.todo.pendingTodos);
   const dispatch = useDispatch();
   const location = useLocation();
   console.log(location.pathname);
-  const content = location.pathname === "/auth" ? "Please Login or Register to view your tasks" : "You have 0 active tasks";
+  const content = location.pathname === "/auth" ? "Please Login or Register to view your tasks" : `You have ${activeTasks.length} active tasks`;
 
   const icons = [
     { icon: faGithub, action: () => window.open("https://github.com/xXyousefXx6768", "_blank") },

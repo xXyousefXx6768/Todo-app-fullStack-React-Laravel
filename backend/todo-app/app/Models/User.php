@@ -9,8 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Laravel\Sanctum\HasApiTokens;
 
+
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -58,6 +59,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_img_url',
     ];
 
     /**

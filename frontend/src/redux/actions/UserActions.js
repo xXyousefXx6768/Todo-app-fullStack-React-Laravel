@@ -269,48 +269,48 @@ export const logout = () => async (dispatch) => {
         
     }
 };
-export const updateUserInfo = (user) => async (dispatch)=> {
+export const updateUserInfo = (user) => async (dispatch) => {
     try {
-
-        await axios.get(
-            `${LARAVEL_SERVER}/sanctum/csrf-cookie`, 
-             {withCredentials: true });
-
-        const res = await axios.put(`${LARAVEL_SERVER}/updateUserInfo`, user);
-    
-        dispatch({
-          type: UPDATE_USER_INFO,
-          payload: res.data,
-        });
-        toast.success(res.data.message, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-            });
-      } catch (error) {
-        dispatch({
-            type:UPDATE_USER_FAIL
-        })
-        const errorMessage = error.response && error.response.data && error.response.data.message
-            ? error.response.data.message
-            : "An unexpected error occurred";
-        toast.error(errorMessage, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-            });
-    
+      await axios.get(`${LARAVEL_SERVER}/sanctum/csrf-cookie`, {
+        withCredentials: true,
+      });
+  
+      const { id, ...data } = user;
+     console.log(id + 'id')
+      const formData = new FormData();
+      formData.append("name", data.name);
+  
+      if (data.profile_img_url instanceof File) {
+        formData.append("profile_img_url", data.profile_img_url);
+        console.log(data.profile_image_url);
       }
-}
+      
+
+  
+      const res = await axios.post(
+        `${LARAVEL_SERVER}/api/updateUser/${id}?_method=PUT`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+  
+      dispatch({
+        type: UPDATE_USER_INFO,
+        payload: res.data.user,
+      });
+  
+      console.log("✅ Update user info:", res.data);
+      console.log(res.data.user.profile_img_url+'profile_img_url');
+
+      toast.success(res.data.message);
+    } catch (error) {
+      dispatch({ type: UPDATE_USER_FAIL });
+      const errorMessage =
+        error.response?.data?.message || "An unexpected error occurred";
+      toast.error(errorMessage);
+    }
+  };

@@ -58,6 +58,11 @@ function App() {
                <TaskPageLayout />
               </ProtectedRoute>
               } />
+              <Route path='/user/update/:id' element={
+             <ProtectedRoute>
+               <TaskPageLayout />
+              </ProtectedRoute>
+              } />
             
             <Route path="/completed" element={
                 <ProtectedRoute>

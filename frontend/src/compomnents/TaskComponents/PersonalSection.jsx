@@ -1,15 +1,21 @@
 import React from 'react'
 import { PieChart } from '@mui/x-charts/PieChart';
-
+import UpdateUserInfoModal from './UpdateUserInfoModal';
+import {setOpenModal} from '../../redux/actions/ModalAction'
 import { useDispatch, useSelector } from 'react-redux'
+import userimg from '../../assets/user.png'
 import { data } from 'react-router';
 function PersonalSection() {
   const user = useSelector((state) => state.user.user);
+  const isOpen = useSelector((state) => state.Modal.openModal);
   const tasks = useSelector((state) => state.todo.todos);
   const pendingTodos= useSelector((state) => state.todo.pendingTodos);
   const completedTodos= useSelector((state) => state.todo.completedTodos);
   const isDark = useSelector((state) => state.theme.isDarkMode);
 
+  const dispatch = useDispatch()
+
+  const LARAVEL_SERVER = import.meta.env.VITE_LARAVEL_BASE_URL;
   const ChartData=[
    
       { id: 1, label: 'Pending', value: pendingTodos.length || 0, color: '#fb923c' },
@@ -23,6 +29,7 @@ function PersonalSection() {
 
   
   return (
+    <>
     <div>
         <div className="!m-6 flex flex-col align-center  ">
             <div className="!px-2 !py-4 
@@ -38,21 +45,27 @@ function PersonalSection() {
             transition duration-300 
             ease-in-out cursor-pointer 
             !border-2 !border-transparent 
-            hover:border-2 hover:border-white">
+            hover:border-2 hover:border-white"
+            onClick={() => dispatch(setOpenModal("updateUser"))}
+            >
             <div>
             </div>
             {
               user? 
-              <div>
-            <h1 className="flex flex-col text-xl">
+              <div className='flex'   >
+              <img className='!w-12 !h-12 rounded-full' src={`${LARAVEL_SERVER}/${user.profile_img_url}`} alt="" />
+            <h1 className="flex flex-col !ml-3 text-xl">
             <span className=" font-medium">Hello,</span>
               <span className="font-bold"> {user.name}</span>
             </h1>
             </div>
             :
-            <div className='animate-pulse'>
+            <div className='animate-pulse flex'>
+              <div class="size-10 rounded-full bg-gray-200"></div>
+              <div class="flex !ml-2 flex-col">
             <h1 className="  h-3 w-28  bg-gray-300 rounded"></h1>
             <h4 className="  h-3 w-12 !mt-2 bg-gray-300 rounded"></h4>
+            </div>
             </div>
             }
             </div>
@@ -141,6 +154,8 @@ function PersonalSection() {
                                            </div>
                                         </div>
     </div>
+   {isOpen==='updateUser' && <UpdateUserInfoModal user={user}/>}
+    </>
   )
 }
 

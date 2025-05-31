@@ -35,5 +35,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/FindTodo', [TodoController::class,'find']);
     Route::post('/CreateTodo', [TodoController::class,'store']);
     Route::put('/updateTodo/{id}', [TodoController::class, 'update']);
+    Route::put('/updateUser/{id}', [UserController::class, 'updateUser']);
     Route::delete('/removeTodo/{todo}', [TodoController::class, 'destroy']);
 });
