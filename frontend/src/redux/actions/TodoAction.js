@@ -168,30 +168,52 @@ export const updateTodo = (todoData) => async (dispatch) => {
 export const SetFavTodo = (todo) => async (dispatch, getState) => {
   try {
     const favs = getState().todo.favTodos || [];
-    const updatedFavs = [...favs, todo];
+
+    // ✅ استخدم id بدل _id
+    const isFav = favs.find((fav) => fav.id === todo.id);
+
+    let updatedFavs;
+
+    if (isFav) {
+      updatedFavs = favs.filter((fav) => fav.id !== todo.id);
+      toast.success('Todo removed from favorites', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    } else {
+      updatedFavs = [...favs, todo];
+      toast.success('Todo marked as favorite', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    }
+
     localStorage.setItem('favTodos', JSON.stringify(updatedFavs));
+
     dispatch({
       type: SET_FAV_TODO,
       payload: updatedFavs
     });
-    toast.success('Todo marked as favorite', {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    })
+
   } catch (error) {
-     const errorMessage = error.response && error.response.data && error.response.data.message
-      ? error.response.data.message
-      : error.message;
-    dispatch({
-      type: GET_TODOS_FAIL
-    })
+    const errorMessage = error.response?.data?.message || error.message;
+
+    dispatch({ type: GET_TODOS_FAIL });
+
     toast.error(errorMessage, {
       position: "top-center",
       autoClose: 5000,

@@ -47,7 +47,7 @@ export default function  (state=initialState,action){
                 localStorage.setItem('isAuthenticated',false)
                 return{
                     ...state,
-                    token:null,
+                    user: null,
                     isAuthenticated:false,
                     loading:false
 
@@ -58,7 +58,6 @@ export default function  (state=initialState,action){
                 return{
                     ...state,
                     user:null,
-                    token:null,
                     isAuthenticated:false,
                     loading:false
 

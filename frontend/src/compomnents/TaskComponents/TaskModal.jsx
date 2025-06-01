@@ -25,6 +25,7 @@ function TaskModal() {
     }
     console.log("Form data:", payload)
     dispatch(addTodo(payload))
+    dispatch(closeModal())
   }
 
   return (

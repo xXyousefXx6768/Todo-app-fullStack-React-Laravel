@@ -1,5 +1,6 @@
 import React from 'react'
 import { faStar,faPenToSquare } from '@fortawesome/free-regular-svg-icons'
+import { faStar as faStarSolid } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,6 +13,10 @@ function TaskCard({task}) {
    const navigate = useNavigate();
     const dispatch = useDispatch();
     const isOpen = useSelector((state) => state.Modal.openModal);
+    const favTodos = useSelector((state) => state.todo.favTodos || []);
+    const isFavorite = favTodos.some(fav => fav.id === task.id);
+
+    
     const handleDelete = () => {
       dispatch(removeTodo(task.id));
     };
@@ -28,7 +33,7 @@ function TaskCard({task}) {
   };
 
   const icons = [
-    {icon:faStar,color:"text-gray-400",onclick:handleFav},
+    {icon:isFavorite?faStarSolid:faStar,color: isFavorite ? "text-yellow-600" : "text-gray-400",onclick:handleFav},
     {icon:faPenToSquare,color:"text-[#00A1F1]",onclick: () => handleOpenModal()},
     {icon:faTrash,color:"text-[#F65314]",onclick:handleDelete},
   ]

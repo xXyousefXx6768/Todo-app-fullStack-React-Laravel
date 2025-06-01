@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
+import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from 'react-router-dom';
@@ -18,7 +19,7 @@ function TopBar({ toggleSidebar }) {
 
   const icons = [
     { icon: faGithub, action: () => window.open("https://github.com/xXyousefXx6768", "_blank") },
-    { icon: faMoon, action: () => dispatch(toggleDarkMode()) },
+    { icon: isDark ? faSun : faMoon, action: () => dispatch(toggleDarkMode()) },
     { icon: faUser, action: () => alert("User icon clicked!") },
   ];
 
