@@ -9,11 +9,13 @@ import IconCheck from '../icons/IconCheck'
 import IconLogout from '../icons/IconLogout'
 import IconFileCheck from '../icons/IconFileCheck'
 import IconGrid from '../icons/IconGrid'
+import IconPending from '../icons/IconPending'
 import IconStopWatch from '../icons/IconStopWatch'
 import IconStar from '../icons/IconStar';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
+import {faSpinner} from '@fortawesome/free-solid-svg-icons'
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { toggleDarkMode } from "../redux/actions/DarkModeAction";
@@ -43,7 +45,7 @@ function SideBar({ isOpen, closeSidebar }) {
             label:"Active",
         },
         {
-            icon:<IconStopWatch strokeColor={getStrokeColor('/pending')} />,
+            icon:<IconPending strokeColor={getStrokeColor('/pending')} />,
             link:"/pending",
             label:"Pending",
         },
@@ -51,6 +53,11 @@ function SideBar({ isOpen, closeSidebar }) {
             icon:<IconStar strokeColor={getStrokeColor('/starred')} />,
             link:"/starred",
             label:"Starred",
+        },
+        {
+            icon:<IconStopWatch strokeColor={getStrokeColor('/timer')} />,
+            link:"/overdue",
+            label:"overdue",
         },
         
         

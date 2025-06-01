@@ -4,6 +4,7 @@ const initialState = {
     todos: [],
     pendingTodos : [],
     completedTodos : [],
+    overdueTodos : [],
     favTodos: JSON.parse(localStorage.getItem('favTodos')) || [],
 
 };
@@ -16,6 +17,7 @@ export default function (state = initialState, action) {
                 todos: action.payload,
                 pendingTodos : action.payload.filter(todo => todo.status == 0),
                 completedTodos : action.payload.filter(todo => todo.status == 1),
+                overdueTodos : action.payload.filter(todo => new Date(todo.completed_at).getTime() < Date.now()),
             };
         case ADD_TODO:
             const newTodo = action.payload;

@@ -16,6 +16,7 @@ function TaskPageLayout() {
   const tasks = useSelector((state) => state.todo.todos);
   const pendingTodos= useSelector((state) => state.todo.pendingTodos);
   const StarredTodos= useSelector((state) => state.todo.favTodos);
+  const overdueTodos= useSelector((state) => state.todo.overdueTodos);
   const completedTodos= useSelector((state) => state.todo.completedTodos);
 
   console.log("StarredTodos:", StarredTodos);
@@ -39,6 +40,8 @@ if (path === '/completed') {
   AllTasks = pendingTodos 
 }else if (path === '/starred') {
   AllTasks= StarredTodos
+}else if (path === '/overdue') {
+  AllTasks= overdueTodos
 }
 
 

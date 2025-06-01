@@ -51,7 +51,14 @@ function TaskCard({task}) {
     ? new Date(task.created_at).toLocaleDateString('en-GB')
     : 'No date'}
 </p>
-         <p class="text-sm font-bold text-green-500">{task.priority?task.priority:"No priority"}</p>
+<p className={`text-sm font-bold ${
+  task.priority === 'high' ? 'text-red-500' :
+  task.priority === 'medium' ? 'text-yellow-500' :
+  task.priority === 'low' ? 'text-green-500' :
+  'text-gray-400'
+}`}>
+  {task.priority ? task.priority : "No priority"}
+</p>
          <div>
           <div class="flex  items-center gap-3 text-gray-400 text-[1.2rem]">
             {icons.map((icon, index) => (

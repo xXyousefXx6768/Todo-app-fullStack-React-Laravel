@@ -75,6 +75,13 @@ function App() {
                  <TaskPageLayout />
                </ProtectedRoute>
                  } />
+                 
+            <Route path="/overdue" element={
+                 <ProtectedRoute>
+                  <TaskPageLayout />
+                </ProtectedRoute>
+                  } />
+            
 
             <Route path="/pending" element={
                  <ProtectedRoute>

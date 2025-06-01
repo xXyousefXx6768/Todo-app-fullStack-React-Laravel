@@ -11,6 +11,7 @@ function PersonalSection() {
   const tasks = useSelector((state) => state.todo.todos);
   const pendingTodos= useSelector((state) => state.todo.pendingTodos);
   const completedTodos= useSelector((state) => state.todo.completedTodos);
+  const overdueTodos= useSelector((state) => state.todo.overdueTodos);
   const isDark = useSelector((state) => state.theme.isDarkMode);
 
   const dispatch = useDispatch()
@@ -20,6 +21,7 @@ function PersonalSection() {
    
       { id: 1, label: 'Pending', value: pendingTodos.length || 0, color: '#fb923c' },
       { id: 2, label: 'Completed', value: completedTodos.length || 0, color: '#22c55e' },
+      { id: 3, label: 'Overdue', value: overdueTodos.length || 0, color: '#ef4444' },
     
   ]
 
