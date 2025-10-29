@@ -53,8 +53,8 @@ return [
 
         'sqs' => [
             'driver' => 'sqs',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'key' => env('CUSTOM_AWS_ACCESS_KEY_ID'),
+            'secret' => env('CUSTOM_AWS_SECRET_ACCESS_KEY'),
             'prefix' => env('SQS_PREFIX', 'https://sqs.us-east-1.amazonaws.com/your-account-id'),
             'queue' => env('SQS_QUEUE', 'default'),
             'suffix' => env('SQS_SUFFIX'),
